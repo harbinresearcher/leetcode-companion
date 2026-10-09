@@ -13,3 +13,6 @@ test-results/
 .tmp/
 .browsers/
 .playwright-cli/
+.vscode/
+.idea/
+coverage/

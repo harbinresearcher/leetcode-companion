@@ -26,4 +26,8 @@ export interface Problem {
   createdAt: number;
   updatedAt: number;
 }
-export interface AIConfig { apiKey: string; baseUrl: string; model: string }
+export interface AIConfig {
+  apiKey: string;
+  baseUrl: string;
+  model: string;
+}

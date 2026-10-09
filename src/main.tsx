@@ -12,5 +12,9 @@ import './index.css';
  */
 logger.info('开始挂载应用');
 // 1.1 核心逻辑位于独立模块，入口只负责 UI
-ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><App /></React.StrictMode>);
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
 logger.info('应用挂载完成');

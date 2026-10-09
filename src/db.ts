@@ -12,7 +12,8 @@ export class CompanionDB extends Dexie {
 }
 export const db = new CompanionDB();
 export const getAllProblems = () => db.problems.orderBy('createdAt').reverse().toArray();
-export const getDueProblems = (now = new Date()) => db.problems.where('fsrsCard.due').belowOrEqual(now).toArray();
+export const getDueProblems = (now = new Date()) =>
+  db.problems.where('fsrsCard.due').belowOrEqual(now).toArray();
 
 export async function saveProblem(problem: Problem): Promise<void> {
   /*
@@ -40,7 +41,12 @@ export async function deleteProblem(id: string): Promise<void> {
   logger.info('题目删除完成');
 }
 
-export async function saveReview(snapshot: Problem, rating: Grade, now = new Date(), storage = db): Promise<void> {
+export async function saveReview(
+  snapshot: Problem,
+  rating: Grade,
+  now = new Date(),
+  storage = db,
+): Promise<void> {
   /*
    * ========================================================================
    * 步骤1：原子保存评分
@@ -51,11 +57,19 @@ export async function saveReview(snapshot: Problem, rating: Grade, now = new Dat
   // 1.1 跨 Tab 和重复点击都不能使用过期快照评分
   await storage.transaction('rw', storage.problems, async () => {
     const current = await storage.problems.get(snapshot.id);
-    if (!current || current.updatedAt !== snapshot.updatedAt || current.fsrsCard.reps !== snapshot.fsrsCard.reps) {
+    if (
+      !current ||
+      current.updatedAt !== snapshot.updatedAt ||
+      current.fsrsCard.reps !== snapshot.fsrsCard.reps
+    ) {
       throw new Error('这道题已在其他页面更新或删除，请重新加载队列。');
     }
     // 1.2 根据当前持久化卡片排期，日期始终为 Date
-    await storage.problems.put({ ...current, fsrsCard: review(current.fsrsCard, rating, now), updatedAt: now.getTime() });
+    await storage.problems.put({
+      ...current,
+      fsrsCard: review(current.fsrsCard, rating, now),
+      updatedAt: now.getTime(),
+    });
   });
   logger.info('复习评分保存完成');
 }

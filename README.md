@@ -1,6 +1,6 @@
-# LeetCode Companion
+# LCC (LeetCode Companion)
 
-把刷题变成刷模式。纯前端、本地运行的算法学习工具。
+AI 驱动的算法刷题伴侣，把刷题变成刷模式。纯前端、本地运行。
 
 粘贴题目 → AI 提炼模式与解法 → 存入本地题库 → 主动回忆 → FSRS 安排下次复习。
 
@@ -37,6 +37,22 @@ FSRS 使用默认参数并开启 fuzz。“忘了”可能几分钟后再次到�
 ## AI 配置
 
 默认 Base URL 为 `https://api.deepseek.com/v1`，Model 为 `deepseek-chat`。
+
+配置示例（Key 均需自行申请，模型以账号可用列表为准）：
+
+```text
+DeepSeek
+  Base URL: https://api.deepseek.com/v1
+  Model:    deepseek-chat
+  API Key:  你的 DeepSeek API Key
+
+OpenAI
+  Base URL: https://api.openai.com/v1
+  Model:    gpt-4o-mini
+  API Key:  你的 OpenAI API Key
+```
+
+参考：[DeepSeek API](https://api-docs.deepseek.com/)、[OpenAI 模型文档](https://developers.openai.com/api/docs/models/gpt-4o-mini)。
 
 支持 OpenAI 风格的 `/chat/completions` 服务。Base URL 填 API 根地址，不含 `/chat/completions`。模型必须支持 JSON 输出，服务必须允许浏览器跨域调用。远程服务使用 HTTPS，本机服务允许 HTTP。
 
@@ -83,6 +99,12 @@ AI 只允许预定义的 16 种模式。无法解析的 JSON 不入库；字段�
 
 ## Agent 接手
 
-依次阅读 [项目背景](docs/project-context.md)、[原始阶段方案](docs/phase-1-plan.md)、[实现修正](docs/implementation.md)、[交接记录](docs/HANDOFF.md) 和 [协作约束](AGENTS.md)。每次修改后更新交接记录，提交并推送，不提交 Key、个人题库、浏览器配置或缓存。
+先读 [当前进度](docs/STATUS.md) 与 [路线图](docs/ROADMAP.md)，再按需读 [架构](docs/ARCHITECTURE.md)、[项目背景](docs/project-context.md)、[原始阶段方案](docs/phase-1-plan.md)、[实现修正](docs/implementation.md) 和 [详细交接](docs/HANDOFF.md)。Agent 遵守 [协作约束](AGENTS.md)，每次工作结束必须更新 STATUS.md。
 
-第一阶段不做后端、账号、自动抓取、浏览器扩展、代码编辑器、掌握度图表或面试模拟。后续路线按背景文档推进，不自行扩大范围。许可证尚未选择。
+提交前运行 `npm run lint`、`npm run format:check`、`npm test`、`npm run build`。开发与 PR 流程见 [CONTRIBUTING.md](CONTRIBUTING.md)，不要提交 Key、个人题库、浏览器配置或缓存。
+
+第一阶段不做后端、账号、自动抓取、浏览器扩展、代码编辑器、掌握度图表或面试模拟。后续任务见 [ROADMAP.md](docs/ROADMAP.md)，当前仓库仍为私有，暂不启用 CI。
+
+## License
+
+[MIT](LICENSE)，Copyright © 2026 harbinresearcher。

@@ -1,0 +1,58 @@
+# LCC 架构
+
+纯前端、本地 Web App。没有后端、账号或云存储；只有题目分析调用用户配置的外部 AI 服务。
+
+## 技术栈
+
+- React 18 + TypeScript：三个页面与设置窗口。
+- Vite 6 + Tailwind 4：开发、构建和样式。
+- Dexie + dexie-react-hooks：IndexedDB 持久化与响应式题库。
+- ts-fsrs：默认参数与 enable_fuzz 排期。
+- Vitest + fake-indexeddb：核心边界和存储一致性测试。
+- ESLint flat config + Prettier：代码与格式检查。
+
+精确依赖版本由 package-lock.json 固定。
+
+## 目录
+
+```text
+src/
+├── main.tsx / App.tsx       入口、导航与存储错误边界
+├── patterns.ts             16 个固定模式与骨架
+├── types.ts                题目、分析结果和配置类型
+├── ai.ts                   Prompt、HTTP 请求、校验、AI 配置
+├── db.ts                   存储、到期查询、评分事务
+├── fsrs.ts                 新卡与评分排期
+├── logger.ts               不包含个人数据的动作日志
+├── components/             分析展示与 AI 设置
+└── pages/                  导入、题库、复习
+tests/core.test.ts          核心行为验证
+docs/                      进度、路线、架构与历史决策
+.github/                   Issue 与 PR 模板
+```
+
+## 核心模块
+
+`patterns` 是 AI 可选模式的唯一列表，ID 固定。`ai` 接收文本与配置，返回已校验结果或可见错误，不负责写题库。`db` 负责 CRUD 和评分一致性，`fsrs` 只负责算法排期。四个模块不依赖 React，方便以后复用；当前不增加单独 core 包或多包工程。
+
+UI 通过存储模块读取题目。题库使用响应式查询；复习队列是进入本轮时的快照，避免分钟学习步骤立即反复插入题目。
+
+## 数据流
+
+```text
+[学习闭环] ──┬── 导入 ──┬── 手动题干 → AI 请求 → 字段校验
+             │          └── 新卡片 → IndexedDB
+             ├── 题库 ───── 模式筛选 → 题干与分析
+             └── 复习 ──┬── 到期快照 → 独立回忆 → 揭示
+                        └── 评分 → FSRS → 事务保存 → 切题
+```
+
+评分事务重新读取当前记录，对照 updatedAt 与卡片 reps。过期快照不覆盖其他页面的更新。UI 同步锁防重复点击，数据库事务防并发写入；这不等同于跨浏览器或云端同步。
+
+## 数据位置与边界
+
+- IndexedDB `leetcode-companion` / `problems`：题干、标签、分析、卡片和时间戳；`fsrsCard.due` 使用 Date 索引。
+- localStorage `companion.ai.v1`：API Key、Base URL、Model。
+- 请求：`${baseUrl}/chat/completions`，只发送题目文本和约束 Prompt；不读取原题链接。
+
+AI 结果不能视为标准答案；非法 JSON 不入库，字段默认值带警告。密钥未加密，清除站点数据会丢题库，不同访问地址的数据隔离。没有导出、复习日志表或模式掌握度统计，不把未来模块写成已有能力。

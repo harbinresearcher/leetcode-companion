@@ -2,7 +2,13 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { loadAIConfig, saveAIConfig } from '../ai';
 import { logger } from '../logger';
 
-export default function Settings({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
+export default function Settings({
+  onClose,
+  onSaved,
+}: {
+  onClose: () => void;
+  onSaved: () => void;
+}) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [config, setConfig] = useState(loadAIConfig);
   const [error, setError] = useState('');
@@ -30,22 +36,75 @@ export default function Settings({ onClose, onSaved }: { onClose: () => void; on
      */
     logger.info('开始提交 AI 设置');
     // 1.1 写入失败保留表单与密钥输入，不显示成功
-    try { saveAIConfig(config); onSaved(); onClose(); logger.info('AI 设置提交完成'); }
-    catch (e) { setError(e instanceof Error ? e.message : '配置保存失败。'); }
+    try {
+      saveAIConfig(config);
+      onSaved();
+      onClose();
+      logger.info('AI 设置提交完成');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : '配置保存失败。');
+    }
   }
-  return <dialog className="settings-dialog" ref={dialog} onCancel={onClose} aria-labelledby="settings-title">
-    <form onSubmit={save} className="space-y-5">
-      <div className="flex items-center justify-between"><div><p className="eyebrow">连接你的模型</p><h2 id="settings-title">AI 设置</h2></div>
-        <button type="button" className="icon-button" onClick={onClose} aria-label="关闭设置">×</button></div>
-      <label className="field">API Key<input type="password" autoComplete="off" required value={config.apiKey} placeholder="输入你的 API Key"
-        onChange={e => setConfig({ ...config, apiKey: e.target.value })} /></label>
-      <label className="field">Base URL<input type="url" required value={config.baseUrl} placeholder="https://api.deepseek.com/v1"
-        onChange={e => setConfig({ ...config, baseUrl: e.target.value })} /></label>
-      <label className="field">Model<input required value={config.model} placeholder="deepseek-chat"
-        onChange={e => setConfig({ ...config, model: e.target.value })} /></label>
-      <p className="muted text-sm leading-relaxed">默认使用 DeepSeek。兼容 OpenAI 风格的 API，服务需支持浏览器跨域请求和 JSON 输出。密钥仅保存在此浏览器中，请使用自己的密钥。</p>
-      {error && <p className="error" role="alert">{error}</p>}
-      <button className="primary w-full" type="submit">保存配置</button>
-    </form>
-  </dialog>;
+  return (
+    <dialog
+      className="settings-dialog"
+      ref={dialog}
+      onCancel={onClose}
+      aria-labelledby="settings-title"
+    >
+      <form onSubmit={save} className="space-y-5">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="eyebrow">连接你的模型</p>
+            <h2 id="settings-title">AI 设置</h2>
+          </div>
+          <button type="button" className="icon-button" onClick={onClose} aria-label="关闭设置">
+            ×
+          </button>
+        </div>
+        <label className="field">
+          API Key
+          <input
+            type="password"
+            autoComplete="off"
+            required
+            value={config.apiKey}
+            placeholder="输入你的 API Key"
+            onChange={(e) => setConfig({ ...config, apiKey: e.target.value })}
+          />
+        </label>
+        <label className="field">
+          Base URL
+          <input
+            type="url"
+            required
+            value={config.baseUrl}
+            placeholder="https://api.deepseek.com/v1"
+            onChange={(e) => setConfig({ ...config, baseUrl: e.target.value })}
+          />
+        </label>
+        <label className="field">
+          Model
+          <input
+            required
+            value={config.model}
+            placeholder="deepseek-chat"
+            onChange={(e) => setConfig({ ...config, model: e.target.value })}
+          />
+        </label>
+        <p className="muted text-sm leading-relaxed">
+          默认使用 DeepSeek。兼容 OpenAI 风格的 API，服务需支持浏览器跨域请求和 JSON
+          输出。密钥仅保存在此浏览器中，请使用自己的密钥。
+        </p>
+        {error && (
+          <p className="error" role="alert">
+            {error}
+          </p>
+        )}
+        <button className="primary w-full" type="submit">
+          保存配置
+        </button>
+      </form>
+    </dialog>
+  );
 }
