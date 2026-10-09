@@ -646,3 +646,30 @@ select {
     transition: none !important;
   }
 }
+
+.import-toast {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: min(390px, calc(100vw - 40px));
+  padding: 14px 18px;
+  border: 1px solid #65b890;
+  border-radius: 12px;
+  background: #172c24;
+  color: #e3fff0;
+  box-shadow: 0 12px 36px #0008;
+}
+.import-toast-error {
+  border-color: #ec8888;
+  background: #362021;
+  color: #ffdfdf;
+}
+.import-toast button {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-size: 22px;
+}

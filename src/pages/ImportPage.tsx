@@ -1,5 +1,6 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { analyzeProblem, loadAIConfig } from '../ai';
+import { resolveProblemSource } from '../source';
 import { saveProblem } from '../db';
 import { newCard } from '../fsrs';
 import { PATTERNS } from '../patterns';
@@ -22,6 +23,7 @@ export default function ImportPage({
   const [error, setError] = useState('');
   const [result, setResult] = useState<Problem | null>(null);
   const locked = useRef(false);
+  const [notice, setNotice] = useState('');
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -37,19 +39,18 @@ export default function ImportPage({
     locked.current = true;
     setBusy(true);
     setError('');
+    setNotice('');
     setResult(null);
     try {
       const cleanUrl = url.trim();
-      if (cleanUrl && !/^https?:\/\//i.test(cleanUrl))
-        throw new Error('题目链接需以 http:// 或 https:// 开头。');
-      if (cleanUrl) new URL(cleanUrl);
-      const data = await analyzeProblem(text, loadAIConfig());
+      const description = await resolveProblemSource(text, cleanUrl);
+      const data = await analyzeProblem(description, loadAIConfig());
       const now = Date.now();
       // 1.2 题干、分析和新卡片一次保存，成功后才清空输入
       const problem: Problem = {
         id: crypto.randomUUID(),
         title: data.title,
-        description: text.trim(),
+        description,
         url: cleanUrl,
         difficulty: data.difficulty,
         primaryPatternId: data.primaryPatternId,
@@ -68,6 +69,7 @@ export default function ImportPage({
       };
       await saveProblem(problem);
       setResult(problem);
+      setNotice(`导入成功：${problem.title}`);
       setText('');
       setUrl('');
       logger.info('题目导入完成');
@@ -80,6 +82,24 @@ export default function ImportPage({
   }
   return (
     <div className="import-grid">
+      {(notice || error) && (
+        <div
+          className={`import-toast ${error ? 'import-toast-error' : ''}`}
+          role={error ? 'alert' : 'status'}
+        >
+          <span>{error || notice}</span>
+          <button
+            type="button"
+            aria-label="关闭导入提示"
+            onClick={() => {
+              setNotice('');
+              setError('');
+            }}
+          >
+            ×
+          </button>
+        </div>
+      )}
       <div className="space-y-6">
         <div className="page-heading">
           <p className="eyebrow">从一道题，找到一类解法</p>
@@ -94,7 +114,7 @@ export default function ImportPage({
             <span className="mono muted text-xs">TEXT → PATTERN</span>
           </div>
           <label className="field">
-            原题链接 <span className="muted font-normal">可选</span>
+            原题链接 <span className="muted font-normal">与描述二选一</span>
             <input
               type="url"
               value={url}
@@ -107,7 +127,6 @@ export default function ImportPage({
             题目描述
             <textarea
               aria-label="题目描述"
-              required
               rows={11}
               value={text}
               disabled={busy}
@@ -118,7 +137,7 @@ export default function ImportPage({
             />
           </label>
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="muted text-xs">手动粘贴，不自动读取链接</span>
+            <span className="muted text-xs">链接自动读取；也可只粘贴完整题干</span>
             <span className="mono muted text-xs">{text.length} 字符</span>
           </div>
           {!configured && (
@@ -129,22 +148,17 @@ export default function ImportPage({
               </button>
             </div>
           )}
-          {error && (
-            <p role="alert" className="error">
-              {error}
-            </p>
-          )}
           <button
             type="submit"
             className="primary w-full"
-            disabled={busy || !text.trim() || !configured}
+            disabled={busy || (!text.trim() && !url.trim()) || !configured}
           >
             {busy ? '正在分析并保存…' : '导入并解析 →'}
           </button>
           <p className="muted text-xs text-center" aria-live="polite">
             {busy
-              ? '分析最多等待 60 秒，请保持页面打开。'
-              : '题目保存在此浏览器；分析时题目文本会发送到你配置的 AI 服务。'}
+              ? '正在读取并分析题目，请保持页面打开。'
+              : '链接交给 Jina Reader 读取，题干发送到你配置的 AI 服务；题库保存在本地。'}
           </p>
         </form>
         {result && (
