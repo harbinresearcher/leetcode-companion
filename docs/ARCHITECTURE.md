@@ -53,6 +53,11 @@ UI 通过存储模块读取题目。题库使用响应式查询；复习队列�
 
 - IndexedDB `leetcode-companion` / `problems`：题干、标签、分析、卡片和时间戳；`fsrsCard.due` 使用 Date 索引。
 - localStorage `companion.ai.v1`：API Key、Base URL、Model。
-- 请求：`${baseUrl}/chat/completions`，只发送题目文本和约束 Prompt；不读取原题链接。
+- 请求：`${baseUrl}/chat/completions`，发送题目正文和约束 Prompt；有链接时先通过 source.ts 请求 Jina Reader。
 
 AI 结果不能视为标准答案；非法 JSON 不入库，字段默认值带警告。密钥未加密，清除站点数据会丢题库，不同访问地址的数据隔离。没有导出、复习日志表或模式掌握度统计，不把未来模块写成已有能力。
+
+
+## 10 月 9 日导入修复
+
+原题链接与题目描述二选一。有链接时，浏览器先通过 [Jina Reader](https://jina.ai/reader/) 获取公开网页正文，再发送到配置的 AI 服务；API Key 不发送给 Reader。网页可能受登录、反爬、网络和 Reader 限流影响，读取失败会提示，请清空链接后粘贴完整题干。模型必须明确确认完整算法题，拒绝无关内容；失败不会保存题目。导入成功和错误均显示可关闭的醒目浮层。此需求覆盖早期“不读取链接”的范围约定。
