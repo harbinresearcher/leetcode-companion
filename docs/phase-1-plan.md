@@ -1,4 +1,4 @@
-# Algo Mentor 第一阶段执行方案
+# LeetCode Companion 第一阶段执行方案
 
 > 本文档用于交给 AI 编码助手（DSH）执行。目标：**一周内交付一个可本地运行的 Web App MVP**，实现「导入题目 → AI解析模式 → 存入本地库 → FSRS复习」完整闭环。
 
@@ -47,7 +47,7 @@
 ## 三、项目结构
 
 ```
-algo-mentor/
+leetcode-companion/
 ├── index.html
 ├── package.json
 ├── vite.config.ts
@@ -78,8 +78,8 @@ algo-mentor/
 ### Step 1：初始化项目
 
 ```bash
-npm create vite@latest algo-mentor -- --template react-ts
-cd algo-mentor
+npm create vite@latest leetcode-companion -- --template react-ts
+cd leetcode-companion
 npm install
 npm install dexie dexie-react-hooks ts-fsrs
 npm install -D tailwindcss postcss autoprefixer
@@ -132,7 +132,7 @@ body {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Algo Mentor</title>
+    <title>LeetCode Companion</title>
   </head>
   <body>
     <div id="root"></div>
@@ -427,7 +427,7 @@ export class AlgoDB extends Dexie {
   problems!: Table<Problem, string>;
 
   constructor() {
-    super('algo-mentor');
+    super('leetcode-companion');
     this.version(1).stores({
       problems: 'id, primaryPatternId, createdAt',
     });
@@ -596,7 +596,7 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <header className="border-b border-slate-800 px-6 py-4 flex items-center gap-6">
-        <h1 className="text-xl font-bold">Algo Mentor</h1>
+        <h1 className="text-xl font-bold">LeetCode Companion</h1>
         <nav className="flex gap-2">
           {tabs.map(t => (
             <button
@@ -1024,7 +1024,7 @@ export default function ReviewPage() {
 
 | # | 操作 | 预期结果 |
 |---|---|---|
-| 1 | `npm run dev` | 浏览器打开 `http://localhost:5173`，看到 Algo Mentor 界面 |
+| 1 | `npm run dev` | 浏览器打开 `http://localhost:5173`，看到 LeetCode Companion 界面 |
 | 2 | 点击"AI 设置"，填入 API Key | 配置保存到 localStorage，刷新后仍在 |
 | 3 | 粘贴一道 LeetCode 题目描述，点"导入并解析" | 3-10秒后显示题目标题、模式标签、核心洞察、代码骨架 |
 | 4 | 切到"题库"页 | 看到刚导入的题目，可按模式筛选 |

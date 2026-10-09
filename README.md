@@ -1,4 +1,4 @@
-# Algo Mentor
+# LeetCode Companion
 
 把刷题变成刷模式。纯前端、本地运行的算法学习辅助工具。
 
