@@ -1,24 +1,88 @@
 # LeetCode Companion
 
-把刷题变成刷模式。纯前端、本地运行的算法学习辅助工具。
+把刷题变成刷模式。纯前端、本地运行的算法学习工具。
 
-## 当前状态
+粘贴题目 → AI 提炼模式与解法 → 存入本地题库 → 主动回忆 → FSRS 安排下次复习。
 
-仓库已建立，项目背景和第一阶段执行方案已归档。尚未初始化应用，不能运行 `npm run dev`。
+## 快速开始
 
-## Agent 接手入口
+需要 Node.js 22.12+（22.x）、24.x 或 26+。私有仓库需要 GitHub 账号具有访问权限。
 
-1. 阅读 [项目决策](docs/project-context.md)。
-2. 阅读 [第一阶段执行方案](docs/phase-1-plan.md)，包含 16 种模式和初版 Prompt。
-3. 阅读 [交接记录](docs/HANDOFF.md)，确认已完成项和下一步。
-4. 按 [协作约束](AGENTS.md) 开发，每次交接更新记录并提交代码。
+```sh
+git clone https://github.com/harbinresearcher/leetcode-companion.git
+cd leetcode-companion
+npm install && npm run dev
+```
 
-## MVP
+打开 http://127.0.0.1:5173。端口固定为 5173；已占用时先关闭旧服务，避免更换地址后看不到原来的本地题库。
 
-手动粘贴题目文本与链接 → OpenAI 兼容 API 分析 → IndexedDB 保存 → 按模式浏览 → FSRS 复习评分。
+```sh
+npm test
+npm run build
+npm run preview
+```
 
-技术栈：Vite、React 18、TypeScript、Tailwind CSS、Dexie、dexie-react-hooks、ts-fsrs。
+`preview` 预览构建产物，访问地址和开发服务器不同，浏览器存储也不同。
 
-第一阶段不做后端、账号、链接抓取、浏览器扩展、代码编辑器、掌握度图表或面试模式。
+## 使用
 
-应用完成后补充安装步骤、AI 配置说明与运行截图。许可证尚未选择。
+1. 打开“AI 设置”，填写自己的 API Key、Base URL 和 Model。
+2. 粘贴完整题干，包括示例和约束；原题链接可选，不会自动抓取。
+3. 导入后在题库按主要或次要模式筛选，展开题干与分析。
+4. 进入复习，先独立推导，再展开洞察、骨架和前置知识。
+5. 按真实表现选择“忘了 / 困难 / 记住了 / 轻松”。保存后移出本轮队列，更新下次复习时间。
+
+FSRS 使用默认参数并开启 fuzz。“忘了”可能几分钟后再次到期，重新加载队列即可查看；没有硬编码 3 天或 1 周的日程。
+
+## AI 配置
+
+默认 Base URL 为 `https://api.deepseek.com/v1`，Model 为 `deepseek-chat`。
+
+支持 OpenAI 风格的 `/chat/completions` 服务。Base URL 填 API 根地址，不含 `/chat/completions`。模型必须支持 JSON 输出，服务必须允许浏览器跨域调用。远程服务使用 HTTPS，本机服务允许 HTTP。
+
+Key 保存在此浏览器的 localStorage 中，不会写入仓库，也未加密。请用自己的 Key，避免共享机器和不可信页面脚本。分析时题目文本会发送到你配置的 AI 服务。
+
+HTTP 401 检查 Key，429 检查额度，400 检查模型和 JSON 输出支持。网络/CORS 错误需检查地址及服务端跨域配置。超时为 60 秒，不自动重试付费调用。
+
+AI 只允许预定义的 16 种模式。无法解析的 JSON 不入库；字段缺失使用默认内容并展示警告。非法主要模式显示分类待确认提示，兜底标签不能视为可信分类。
+
+## 本地数据
+
+题目和卡片保存在 IndexedDB，刷新不会丢失。不同浏览器、配置文件和访问地址各自保存独立数据。清除站点数据会删除题库；当前没有云同步或导出功能。
+
+## 运行截图
+
+截图来自隔离浏览器，使用示例题和模拟 AI 响应，不代表真实服务分类验收。
+
+### 导入
+
+![导入与解析结果](docs/screenshots/import.png)
+
+### 题库
+
+![模式题库](docs/screenshots/library.png)
+
+### 复习
+
+![先独立回忆](docs/screenshots/review-recall.png)
+
+![揭示洞察并评分](docs/screenshots/review.png)
+
+移动端：[mobile.png](docs/screenshots/mobile.png)。
+
+## 结构
+
+- `src/ai.ts`：Prompt、请求、字段校验与本地配置。
+- `src/db.ts`：Dexie CRUD、到期索引和评分事务。
+- `src/fsrs.ts`：默认 FSRS 初始化与排期，不依赖 React。
+- `src/patterns.ts`：固定 16 种模式。
+- `src/pages/`：导入、题库、复习。
+- `tests/core.test.ts`：AI 边界、IndexedDB 与 FSRS 一致性。
+
+技术栈：React 18、TypeScript、Vite 6、Tailwind 4、Dexie、dexie-react-hooks、ts-fsrs。版本由 lockfile 固定。旧 Tailwind 和 Vitest 已升级，原因见 [实现记录](docs/implementation.md)。
+
+## Agent 接手
+
+依次阅读 [项目背景](docs/project-context.md)、[原始阶段方案](docs/phase-1-plan.md)、[实现修正](docs/implementation.md)、[交接记录](docs/HANDOFF.md) 和 [协作约束](AGENTS.md)。每次修改后更新交接记录，提交并推送，不提交 Key、个人题库、浏览器配置或缓存。
+
+第一阶段不做后端、账号、自动抓取、浏览器扩展、代码编辑器、掌握度图表或面试模拟。后续路线按背景文档推进，不自行扩大范围。许可证尚未选择。
