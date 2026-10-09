@@ -2,9 +2,11 @@
 
 开始前先读 [当前进度](docs/STATUS.md)、[路线图](docs/ROADMAP.md) 和 [架构](docs/ARCHITECTURE.md)。Agent 还必须遵守 [AGENTS.md](AGENTS.md)。
 
+参与本项目即表示你同意遵守[贡献者行为准则](CODE_OF_CONDUCT.md)。安全漏洞**不要**用公开 Issue 报告，见 [SECURITY.md](SECURITY.md)；提问与求助渠道见 [SUPPORT.md](SUPPORT.md)。
+
 ## 开发环境
 
-Node.js 22.12+（22.x）、24.x 或 26+，使用 npm。当前仓库私有，需要仓库访问权限。
+Node.js 22.12+（22.x）、24.x 或 26+，使用 npm。仓库公开，克隆即可开始。
 
 ```sh
 git clone https://github.com/harbinresearcher/leetcode-companion.git
@@ -16,7 +18,7 @@ npm install && npm run dev
 
 ## 分支策略
 
-- `main`：可运行的基线，第一阶段已交付功能。
+- `main`：可运行的基线，第一阶段已交付功能。已启用分支保护：要求通过 PR 合入，禁止强推与删除；仓库所有者保留应急直接推送的旁路。
 - `feature/<简短描述>`：从最新 main 创建，完成单一功能或修复后通过 PR 合入。
 - `dev`：多人协作需要集成分支时再引入；目前不创建长期 dev 分支，避免两条基线漂移。
 
@@ -54,6 +56,8 @@ chore: configure lint and formatting
 
 每次结束必须更新 docs/STATUS.md，写明已完成内容、验证结果、已知问题和下一步。仅在需要保留详细交接背景时更新 docs/HANDOFF.md。
 
+不要提交 API Key、`.env`、个人题库或浏览器配置。仓库启用了密钥扫描的推送保护：一旦提交中出现疑似密钥，`git push` 会被服务端直接拒绝。遇到拦截时请删除密钥并到对应服务商处轮换，**不要**用 `--no-verify` 或其他方式绕过。
+
 ## PR 流程
 
 1. 先读 STATUS 和 ROADMAP；新功能先确认范围，Bug 提供复现步骤。
@@ -62,4 +66,4 @@ chore: configure lint and formatting
 4. 填写 PR 模板，说明问题、改动、验证方式和关联 Issue。
 5. 根据评审修改后重复受影响检查，再合入 main。
 
-MVP 阶段手动验证，暂不启用 GitHub Actions。测试替身只能证明交互与数据流程，不能当作真实 AI 分类验收。许可证为 MIT，提交前确认新增代码和素材允许以此方式分发。
+MVP 阶段手动验证，暂不启用 GitHub Actions（代码扫描使用 GitHub 托管的 CodeQL 默认配置）。测试替身只能证明交互与数据流程，不能当作真实 AI 分类验收。许可证为 MIT，提交前确认新增代码和素材允许以此方式分发。

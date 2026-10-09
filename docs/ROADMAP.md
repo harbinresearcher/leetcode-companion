@@ -39,9 +39,11 @@
 ## 开源协作演进
 
 - [x] 贡献指南、Issue / PR 模板、编辑器与格式配置
+- [x] 社区健康文件：SECURITY.md、CODE_OF_CONDUCT.md、SUPPORT.md、CHANGELOG.md、CODEOWNERS
+- [x] 公开仓库，启用密钥扫描与推送保护、Dependabot、CodeQL 代码扫描与私有漏洞报告
+- [x] `main` 分支保护：要求 PR、禁止强推与删除
 - [ ] 有实际 PR 协作需求后增加 GitHub Actions（lint + test + build）
-- [ ] 发布版本时维护 CHANGELOG
-- [ ] 公开仓库前补社区规范与安全报告渠道
-- [ ] 用户明确授权后公开仓库、整理发布材料
+- [ ] 发布版本时维护 CHANGELOG（0.1.0 已记录）
+- [ ] 整理发布材料：社交预览图、GitHub Pages 项目页（按需）
 
-当前仍为私有仓库；MIT 许可证不意味着已经公开发布。
+仓库已于 2026-10-09 公开，采用 MIT 许可证。公开仓库不等于承诺支持范围：功能边界仍以 [STATUS.md](STATUS.md) 的“已知问题与边界”为准。

@@ -1,12 +1,20 @@
 # LCC (LeetCode Companion)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-%5E22.12%20%7C%7C%20%5E24%20%7C%7C%20%3E%3D26-339933?logo=nodedotjs&logoColor=white)](package.json)
+[![React 18](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite 6](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![FSRS](https://img.shields.io/badge/FSRS-ts--fsrs-8B5CF6)](https://github.com/open-spaced-repetition/ts-fsrs)
+
 AI 驱动的算法刷题伴侣，把刷题变成刷模式。纯前端、本地运行。
 
 粘贴题目 → AI 提炼模式与解法 → 存入本地题库 → 主动回忆 → FSRS 安排下次复习。
 
 ## 快速开始
 
-需要 Node.js 22.12+（22.x）、24.x 或 26+。私有仓库需要 GitHub 账号具有访问权限。
+需要 Node.js 22.12+（22.x）、24.x 或 26+。仓库公开，直接克隆即可。
 
 ```sh
 git clone https://github.com/harbinresearcher/leetcode-companion.git
@@ -103,7 +111,19 @@ AI 只允许预定义的 16 种模式。无法解析的 JSON 不入库；字段�
 
 提交前运行 `npm run lint`、`npm run format:check`、`npm test`、`npm run build`。开发与 PR 流程见 [CONTRIBUTING.md](CONTRIBUTING.md)，不要提交 Key、个人题库、浏览器配置或缓存。
 
-第一阶段不做后端、账号、自动抓取、浏览器扩展、代码编辑器、掌握度图表或面试模拟。后续任务见 [ROADMAP.md](docs/ROADMAP.md)，当前仓库仍为私有，暂不启用 CI。
+第一阶段不做后端、账号、自动抓取、浏览器扩展、代码编辑器、掌握度图表或面试模拟。后续任务见 [ROADMAP.md](docs/ROADMAP.md)。
+
+仓库已公开并启用 `main` 分支保护：改动通过 PR 合入，请勿直接推送。CI（lint + test + build）待有实际协作需求后再加。
+
+## 贡献与支持
+
+- 开发环境、代码规范与 PR 流程：[CONTRIBUTING.md](CONTRIBUTING.md)
+- 社区行为规范：[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- 提问、报 Bug 与功能建议：[SUPPORT.md](SUPPORT.md)
+- 版本变更历史：[CHANGELOG.md](CHANGELOG.md)
+- 报告安全漏洞：**请勿使用公开 Issue**，见 [SECURITY.md](SECURITY.md)
+
+请勿在提交中包含 API Key、个人题库或浏览器配置。[推送保护](https://docs.github.com/code-security/secret-scanning/about-push-protection) 会在检测到疑似密钥时直接拒绝推送；遇到拦截请移除密钥并到服务商处轮换，不要绕过。
 
 ## License
 
