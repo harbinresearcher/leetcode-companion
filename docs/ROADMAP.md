@@ -42,7 +42,7 @@
 - [x] 社区健康文件：SECURITY.md、CODE_OF_CONDUCT.md、SUPPORT.md、CHANGELOG.md、CODEOWNERS
 - [x] 公开仓库，启用密钥扫描与推送保护、Dependabot、CodeQL 代码扫描与私有漏洞报告
 - [x] `main` 分支保护：要求 PR、禁止强推与删除
-- [ ] 有实际 PR 协作需求后增加 GitHub Actions（lint + test + build）
+- [x] GitHub Actions 验证 lint / format:check / test / build；Dependabot 分组周更
 - [ ] 发布版本时维护 CHANGELOG（0.1.0 已记录）
 - [ ] 整理发布材料：社交预览图、GitHub Pages 项目页（按需）
 

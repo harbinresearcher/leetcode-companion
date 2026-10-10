@@ -21,6 +21,8 @@
 - `main` 分支保护：要求 PR 合入、禁止强推与删除分支，仓库所有者保留应急旁路。
 - 仓库描述、16 个话题标签、GitHub Discussions（含 Q&A 分类）与社交预览图素材。
 - 2026-10-10 项目更名为 **AlgoRhythm**：应用品牌（`[ar] AlgoRhythm`）、`package.json` 包名、页面标题、日志前缀、内部存储标识、全部文档与五张运行截图同步更新；`docs/phase-1-plan.md` 标注为历史存档并保留正文原貌。
+- GitHub Actions CI（`npm ci` / lint / format:check / test / build）与分组 Dependabot 周更；`AGENTS.md` 的「MVP 暂不添加 GitHub Actions」规则已推翻。
+- 修正 Node 版本声明：`engines.node` 由 `^22.12.0` 改为 `^22.13.0`（eslint 10 的实际要求），README / CONTRIBUTING / STATUS 的正文与徽章同步。
 
 ## 进行中
 
@@ -30,7 +32,6 @@
 
 - 使用真实 API 导入一道题，确认分类与洞察质量。
 - 是否启动模式化增强阶段，由用户决定。
-- 有实际 PR 协作需求后再加 GitHub Actions（lint + test + build）。
 - 手动上传社交预览图：Settings → General → Social preview，素材见 `docs/assets/social-preview.png`。
 - 手动确认 Settings → Advanced Security 中的 validity checks 与 non-provider patterns（API 无法开启）。
 
@@ -92,7 +93,7 @@
 
 ## 如何运行
 
-Node.js 22.12+（22.x）、24.x 或 26+：
+Node.js 22.13+（22.x）、24.x 或 26+：
 
 ```sh
 npm install

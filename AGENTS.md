@@ -12,4 +12,5 @@
 - 提交前运行 npm run lint、npm run format:check、npm test、npm run build。提交信息使用 feat: / fix: / docs: / chore:。
 - 每完成一段可验证工作，提交并推送，保证其他 Agent 能从仓库接手；未授权时不自行合并其他人的 PR。
 - 不能把计划、模拟请求或未运行的检查写成已完成。
-- 许可证为 MIT。未经用户授权，不公开仓库或发布网站。MVP 暂不添加 GitHub Actions。
+- 许可证为 MIT。仓库已公开，发布网站仍需用户授权。
+- CI 会验证 lint / format:check / test / build，PR 必须全绿才能合并。不要为了绕过 CI 而放宽 eslint、tsconfig 或跳过测试。
