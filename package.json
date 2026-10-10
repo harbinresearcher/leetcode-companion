@@ -15,7 +15,7 @@
     "format:check": "prettier --check src tests package.json tsconfig.json vite.config.ts eslint.config.js index.html"
   },
   "engines": {
-    "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+    "node": "^22.13.0 || ^24.0.0 || >=26.0.0"
   },
   "dependencies": {
     "dexie": "^4.0.0",

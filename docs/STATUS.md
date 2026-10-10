@@ -21,6 +21,8 @@
 - `main` 分支保护：要求 PR 合入、禁止强推与删除分支，仓库所有者保留应急旁路。
 - 仓库描述、16 个话题标签、GitHub Discussions（含 Q&A 分类）与社交预览图素材。
 - 2026-10-10 项目更名为 **AlgoRhythm**：应用品牌（`[ar] AlgoRhythm`）、`package.json` 包名、页面标题、日志前缀、内部存储标识、全部文档与五张运行截图同步更新；`docs/phase-1-plan.md` 标注为历史存档并保留正文原貌。
+- GitHub Actions CI（`npm ci` / lint / format:check / test / build）与分组 Dependabot 周更；`AGENTS.md` 的「MVP 暂不添加 GitHub Actions」规则已推翻。
+- 修正 Node 版本声明：`engines.node` 由 `^22.12.0` 改为 `^22.13.0`（eslint 10 的实际要求），README / CONTRIBUTING / STATUS 的正文与徽章同步。
 
 ## 进行中
 
@@ -30,11 +32,21 @@
 
 - 使用真实 API 导入一道题，确认分类与洞察质量。
 - 是否启动模式化增强阶段，由用户决定。
-- 有实际 PR 协作需求后再加 GitHub Actions（lint + test + build）。
 - 手动上传社交预览图：Settings → General → Social preview，素材见 `docs/assets/social-preview.png`。
 - 手动确认 Settings → Advanced Security 中的 validity checks 与 non-provider patterns（API 无法开启）。
 
 ## 本轮验证
+
+切片 1 轮（2026-10-10）：CI 安全网 + Node 版本声明修正
+
+- **CI 首次运行成功**：`CI` 工作流在 PR #2 上由 `pull_request` 事件触发，job `lint / format / test / build` 的 9 个步骤全部 success（Set up job → checkout → setup-node → npm ci → lint → format:check → test → build → 收尾）。
+- **门禁有效性实测**：另开一次性分支 `test/verify-ci-gate`（草稿 PR #3）故意引入一个未使用变量，CI **精确地在 `Run npm run lint` 步骤失败**（运行 `38020663342`，`conclusion: failure`）。随后关闭 PR #3 并删除远端与本地分支，未合并。这条证据说明 CI 是真拦得住的门，不是摆设。
+- `.github/dependabot.yml` 通过 GitHub 自身的格式校验：PR 检查项 `.github/dependabot.yml` 为 `pass`（1s）。
+- PR #2 全部 4 项检查为绿：`lint / format / test / build`、`CodeQL`、`Analyze (javascript-typescript)`、`.github/dependabot.yml`。
+- **Node 版本修正已复验**：用 semver 逐个校验 124 个带 `engines.node` 的依赖 —— Node `22.13.0` 与 `24.0.0` 均为 **0 个不满足**；修正前的 `22.12.0` 有 **10 个不满足**（整个 eslint 10 家族）。
+- 本地实跑：`npm ci`、`npm run lint`、`npm run format:check`、`npm test`（17 项）、`npm run build` 全部通过。
+- 全仓 `22.12` 仅剩两处**记录该缺陷本身**的文档（本文件的变更说明与规格 §4.7），源码与配置已无残留。
+- **未包含在本次提交**：`src/` 下的数据导出/导入实现。按分工交由 Codex，接口与文案见规格附录 A、任务拆解见 `docs/superpowers/plans/2026-10-10-slice-1-ci-and-data-backup.md` 的 Task 5–9。
 
 更名轮（2026-10-10）：
 
@@ -92,7 +104,7 @@
 
 ## 如何运行
 
-Node.js 22.12+（22.x）、24.x 或 26+：
+Node.js 22.13+（22.x）、24.x 或 26+：
 
 ```sh
 npm install
@@ -108,3 +120,23 @@ npm run dev
 本轮直接连接 r.jina.ai 的真实网络探测超时；因此不能宣称当前机器已成功读取真实 LeetCode 页面。链接来源、网页错误、模型拒绝、成功提示的测试使用模拟响应。
 
 本轮模拟浏览器回归通过：仅链接按钮可用、401 与非法 JSON 不入库、非算法内容拒绝入库、链接加单字保留网页正文、成功浮层可见、刷新持久化、复习评分、移动布局与删除。更新导入页和移动页截图。
+
+
+## 2026-10-10 多会话交接准备
+
+本轮按用户要求准备两份独立开发会话任务：备份核心与题库备份界面。总入口为 `docs/handoffs/00-COORDINATION.md`，DSH 小任务独立登记。当前总架构会话负责契约审查、集成验收和公共进度；模块会话不共同编辑 STATUS。
+
+已核对实际工作区 `D:\mydata\myproject\algorhythm`、既有分支 `feature/slice-1-design`、基线 `2418a63` 与 PR #2 的 CI / CodeQL SUCCESS。备份代码本轮未实施。先核心后界面，不新建分支、不合并 PR，不改变用户待决仓库设置。
+
+发现并登记：JSON 日期类型恢复、损坏 Card 的校验缺口、嵌套白名单和预览后本地数据变化。另将过时 CI/架构说明记录为待用户派给 DSH 的小任务。不得把文档准备或既有基线 CI 通过当作备份业务验收通过。
+
+本轮交接文档检查：引用文件存在，git diff --check 通过。现有业务基线本地 lint、format:check、17 项测试和 build 均通过；这些结果不代表尚未实现的备份功能已通过验收。
+
+
+## 2026-10-10 备份核心合并验收
+
+用户本轮明确授权合并 PR #2。提交 `2ea470d` 已包含备份白名单导出、卡片日期恢复、字段校验、事务恢复与死字段清理。事务内重新读取实际 ID，避免预览快照过期后在 skip 模式覆盖数据。
+
+总架构本轮重新运行 lint、format:check、29 项测试、build：全部通过。GitHub 对 `2ea470d` 的 CI 与 CodeQL 已完成并通过。备份界面尚未实现，本次仅合入工程设施与核心 API，不宣称完整备份功能交付；后续界面继续在 feature/slice-1-design 上接入。
+
+本段替代前文“src 备份尚未实施”的当前状态，历史条目保留。PR 合并状态以 GitHub 回读为准。仓库开关、required checks 与 ESLint/tsconfig 严格度未改；不删除工作分支。

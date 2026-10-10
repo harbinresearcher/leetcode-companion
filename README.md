@@ -1,7 +1,7 @@
 # AlgoRhythm
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-%5E22.12%20%7C%7C%20%5E24%20%7C%7C%20%3E%3D26-339933?logo=nodedotjs&logoColor=white)](package.json)
+[![Node.js](https://img.shields.io/badge/Node.js-%5E22.13%20%7C%7C%20%5E24%20%7C%7C%20%3E%3D26-339933?logo=nodedotjs&logoColor=white)](package.json)
 [![React 18](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite 6](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
@@ -16,7 +16,7 @@
 
 ## 快速开始
 
-需要 Node.js 22.12+（22.x）、24.x 或 26+。仓库公开，直接克隆即可。
+需要 Node.js 22.13+（22.x）、24.x 或 26+。仓库公开，直接克隆即可。
 
 ```sh
 git clone https://github.com/harbinresearcher/algorhythm.git

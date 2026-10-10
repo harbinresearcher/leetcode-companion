@@ -6,6 +6,8 @@ import { AlgoRhythmDB, saveReview } from '../src/db';
 import { newCard, Rating } from '../src/fsrs';
 import { PATTERNS } from '../src/patterns';
 import type { Problem } from '../src/types';
+import * as backup from '../src/backup';
+import { db as backupDb } from '../src/db';
 
 const logger = console;
 const config = { apiKey: 'test-only', baseUrl: 'https://example.test/v1/', model: 'test' };
@@ -167,8 +169,6 @@ describe('IndexedDB and FSRS', () => {
         prerequisites: analysis.prerequisites,
         warnings: [],
       },
-      notes: '',
-      codeDrafts: {},
       fsrsCard: newCard(now),
       createdAt: now.getTime(),
       updatedAt: now.getTime(),
@@ -196,3 +196,220 @@ describe('IndexedDB and FSRS', () => {
   });
 });
 logger.info('核心行为测试已注册');
+
+/*
+ * ========================================================================
+ * 步骤2：验证备份文件与事务恢复
+ * ========================================================================
+ * 数据源：人工夹具与 fake-indexeddb；操作：1) 真实 JSON 往返 2) 验证事务边界
+ */
+logger.info('开始注册备份测试');
+// 2.1 固定时间与合法卡片，避免依赖当前排期
+const backupNow = new Date('2026-10-10T06:00:00Z');
+function backupProblem(id = 'one'): Problem {
+  return {
+    id,
+    title: '示例题',
+    url: '',
+    description: '测试题干',
+    difficulty: 'easy',
+    primaryPatternId: 'hash-map',
+    secondaryPatternIds: ['stack'],
+    aiAnalysis: { coreInsight: '洞察', skeleton: '骨架', prerequisites: ['数组'], warnings: [] },
+    fsrsCard: {
+      due: backupNow,
+      stability: 2,
+      difficulty: 3,
+      elapsed_days: 1,
+      scheduled_days: 2,
+      learning_steps: 0,
+      reps: 4,
+      lapses: 1,
+      state: 2,
+      last_review: new Date('2026-10-09T06:00:00Z'),
+    },
+    createdAt: 1,
+    updatedAt: 2,
+  };
+}
+const backupText = (problems: unknown[]) =>
+  JSON.stringify({
+    app: 'algorhythm',
+    schemaVersion: 1,
+    problems,
+  });
+
+describe('backup core', () => {
+  // 2.2 捕获直接 dump 顶层或嵌套对象造成的敏感字段泄漏
+  it('exports only approved fields at every level and uses local file time', () => {
+    const problem = backupProblem();
+    Object.assign(problem, { apiKey: 'secret', notes: 'private', codeDrafts: { x: 'private' } });
+    Object.assign(problem.aiAnalysis, { apiKey: 'secret' });
+    Object.assign(problem.fsrsCard, { authorization: 'secret' });
+    const file = backup.buildBackup([problem], backupNow);
+    expect(file).toMatchObject({
+      app: 'algorhythm',
+      schemaVersion: 1,
+      count: 1,
+      exportedAt: '2026-10-10T06:00:00.000Z',
+    });
+    expect(JSON.stringify(file)).not.toMatch(/secret|notes|codeDrafts|apiKey|authorization/);
+    expect(backup.backupFileName(new Date(2026, 0, 2, 3, 4))).toBe(
+      'algorhythm-backup-20260102-0304.json',
+    );
+    expect(backup.buildBackup([], backupNow).count).toBe(0);
+  });
+  it.each([
+    ['{', '备份文件不是有效的 JSON。'],
+    ['null', '这不是 AlgoRhythm 的备份文件。'],
+    ['{}', '这不是 AlgoRhythm 的备份文件。'],
+    [
+      '{"app":"algorhythm","schemaVersion":9}',
+      '备份文件版本不受支持（版本 9），请升级 AlgoRhythm 后再导入。',
+    ],
+    ['{"app":"algorhythm","schemaVersion":1}', '备份文件缺少题目列表，可能已损坏。'],
+  ])('rejects whole-file errors without writes: %s', (text, message) => {
+    expect(() => backup.parseBackup(text)).toThrow(message);
+  });
+  it('counts invalid cards and duplicate valid IDs separately', () => {
+    const p = backupProblem();
+    const invalid = [
+      null,
+      { ...p, id: '' },
+      { ...p, title: '' },
+      { ...p, fsrsCard: null },
+      { ...p, fsrsCard: {} },
+      { ...p, fsrsCard: [] },
+      { ...p, fsrsCard: { ...p.fsrsCard, due: 'bad' } },
+      { ...p, fsrsCard: { ...p.fsrsCard, reps: '4' } },
+    ];
+    const result = backup.parseBackup(backupText([...invalid, p, { ...p, title: '第二条' }]));
+    expect(result.invalidCount).toBe(8);
+    expect(result.duplicateInFileCount).toBe(1);
+    expect(result.valid.map((p) => p.title)).toEqual(['示例题']);
+  });
+  it('normalizes optional fields and restores exact Date values through JSON', () => {
+    const p = backupProblem();
+    const result = backup.parseBackup(
+      backupText([
+        {
+          ...p,
+          url: 1,
+          description: null,
+          difficulty: [],
+          primaryPatternId: null,
+          secondaryPatternIds: [1, 'stack'],
+          createdAt: null,
+          updatedAt: 'bad',
+          aiAnalysis: { warnings: 1, prerequisites: [true, '数组'] },
+        },
+      ]),
+    );
+    expect(result.valid[0]).toMatchObject({
+      url: '',
+      description: '',
+      difficulty: 'medium',
+      primaryPatternId: 'two-pointers',
+      secondaryPatternIds: ['stack'],
+      aiAnalysis: { coreInsight: '', skeleton: '', warnings: [], prerequisites: ['数组'] },
+    });
+    expect(Number.isFinite(result.valid[0].createdAt)).toBe(true);
+    expect(Number.isFinite(result.valid[0].updatedAt)).toBe(true);
+    expect(result.valid[0].fsrsCard).toEqual(p.fsrsCard);
+    expect(result.valid[0].fsrsCard.due.toLocaleString()).toBe(backupNow.toLocaleString());
+  });
+  // 2.3 所有恢复测试使用可删除的模拟数据库，不访问用户浏览器
+  it('imports exact FSRS values, skips then overwrites, and preserves the due index', async () => {
+    try {
+      await backupDb.open();
+      const incoming = backup.parseBackup(
+        JSON.stringify(backup.buildBackup([backupProblem()], backupNow)),
+      ).valid;
+      expect(await backup.applyImport(incoming, new Set(), 'skip', backupNow)).toEqual({
+        added: 1,
+        overwritten: 0,
+        skipped: 0,
+      });
+      const stored = await backupDb.problems.get('one');
+      expect(stored?.fsrsCard).toEqual(backupProblem().fsrsCard);
+      expect(stored?.updatedAt).toBe(backupNow.getTime());
+      expect(await backupDb.problems.where('fsrsCard.due').belowOrEqual(backupNow).count()).toBe(1);
+      incoming[0].title = '备份版本';
+      expect(await backup.applyImport(incoming, new Set(['one']), 'skip')).toEqual({
+        added: 0,
+        overwritten: 0,
+        skipped: 1,
+      });
+      expect((await backupDb.problems.get('one'))?.title).toBe('示例题');
+      expect(await backup.applyImport(incoming, new Set(['one']), 'overwrite')).toEqual({
+        added: 0,
+        overwritten: 1,
+        skipped: 0,
+      });
+      expect((await backupDb.problems.get('one'))?.title).toBe('备份版本');
+    } finally {
+      await backupDb.delete();
+    }
+  });
+  it('uses transaction-time IDs when the preview is stale', async () => {
+    try {
+      await backupDb.open();
+      await backupDb.problems.add(backupProblem());
+      const incoming = [{ ...backupProblem(), title: '旧备份' }, backupProblem('deleted')];
+      expect(await backup.applyImport(incoming, new Set(['deleted']), 'skip')).toEqual({
+        added: 1,
+        overwritten: 0,
+        skipped: 1,
+      });
+      expect((await backupDb.problems.get('one'))?.title).toBe('示例题');
+      await backupDb.problems.delete('deleted');
+      expect(await backup.applyImport(incoming, new Set(['deleted']), 'overwrite')).toEqual({
+        added: 1,
+        overwritten: 1,
+        skipped: 0,
+      });
+    } finally {
+      await backupDb.delete();
+    }
+  });
+  it('rolls back earlier additions when a later add fails', async () => {
+    try {
+      await backupDb.open();
+      const broken = {
+        ...backupProblem('bad'),
+        fsrsCard: { ...backupProblem().fsrsCard, unknown: () => 1 },
+      };
+      await expect(
+        backup.applyImport([backupProblem(), broken], new Set(), 'skip'),
+      ).rejects.toThrow();
+      expect(await backupDb.problems.count()).toBe(0);
+    } finally {
+      await backupDb.delete();
+    }
+  });
+  it('downloads serialized JSON and releases its URL even when clicking fails', async () => {
+    let blob: Blob | undefined;
+    const released: string[] = [];
+    const anchor = {
+      href: '',
+      download: '',
+      click: () => {
+        throw new Error('click failed');
+      },
+    };
+    vi.stubGlobal('document', { createElement: () => anchor });
+    vi.stubGlobal('URL', {
+      createObjectURL: (value: Blob) => {
+        blob = value;
+        return 'blob:test';
+      },
+      revokeObjectURL: (url: string) => released.push(url),
+    });
+    const file = backup.buildBackup([], backupNow);
+    expect(() => backup.downloadBackup(file)).toThrow('click failed');
+    expect(released).toEqual(['blob:test']);
+    expect(JSON.parse(await blob!.text())).toEqual(file);
+    expect(anchor.download).toMatch(/^algorhythm-backup-\d{8}-\d{4}\.json$/);
+  });
+});
+logger.info('备份测试注册完成');
