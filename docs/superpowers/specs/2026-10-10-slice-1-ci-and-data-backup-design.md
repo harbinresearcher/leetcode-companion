@@ -38,7 +38,8 @@ AlgoRhythm 目前没有任何自动化质量保证：`lint` / `format:check` / `
 | 5 | `src/types.ts`、`src/pages/ImportPage.tsx` | 修改（删除死字段） |
 | 6 | `tests/core.test.ts` | 修改（新增导出导入测试） |
 | 7 | `AGENTS.md`、`docs/ROADMAP.md`、`docs/STATUS.md` | 修改（规则与进度） |
-| 8 | 远端分支 `fix/import-link-feedback` | 删除 |
+| 8 | `package.json`、`README.md`、`CONTRIBUTING.md`、`docs/STATUS.md` | 修改（修正 Node 版本声明，见 §4.7） |
+| 9 | 远端分支 `fix/import-link-feedback` | ✅ 已完成（2026-10-10 删除，HTTP 204） |
 
 ## 4. 详细设计
 
@@ -173,6 +174,31 @@ updates:
 
 `docs/ROADMAP.md` 中勾掉「有实际 PR 协作需求后增加 GitHub Actions（lint + test + build）」。
 
+### 4.7 修正 Node 版本声明（实施期发现的真实缺陷）
+
+**问题**：`package.json` 声明 `"node": "^22.12.0 || ^24.0.0 || >=26.0.0"`，README / CONTRIBUTING / STATUS 也写着「Node.js 22.12+」。但依赖 `eslint@10.12.0` 的 `engines` 是 `^20.19.0 || ^22.13.0 || >=24`——**Node 22.12.0 满足项目声明，却跑不了 `npm run lint`**。
+
+实测（用 semver 逐个校验 124 个带 `engines.node` 的依赖）：
+
+| Node 版本 | 不满足的依赖数 |
+| --- | --- |
+| 22.12.0 | **10** —— 整个 eslint 10 家族（`eslint`、`@eslint/js`、`@eslint/core`、`espree`、`eslint-scope`、`eslint-visitor-keys` 等） |
+| 24.0.0 / 24.9.0 / 26.0.0 | 0 |
+
+**修法**：把 5 处 `22.12` 统一改为 `22.13`。
+
+| 文件 | 位置 |
+| --- | --- |
+| `package.json` | `engines.node` |
+| `README.md` | 第 4 行 Node 徽章的 URL 编码（`%5E22.12`） |
+| `README.md` | 第 19 行正文 |
+| `CONTRIBUTING.md` | 第 9 行 |
+| `docs/STATUS.md` | 「如何运行」一节 |
+
+**为什么放进本切片**：CI 建立的是「声明的环境必须真的能跑」这条约束，而这里恰好有一处声明是假的。修它，`engines` 字段才可信。
+
+> **注意**：CI 用 Node `24` **不会**发现这个问题。即使改成 matrix `[22, 24]` 也发现不了——`setup-node` 装的是 22.x 的最新版（≥22.13），永远绕过了 22.12 这个下界。这类"声明与依赖不一致"的问题只能靠检查依赖的 `engines` 字段发现，这也是本次记录它的原因。
+
 ## 5. 验收标准
 
 1. **CI 真的通电**：新建一个 PR，故意引入一处 lint 错误，确认 CI 变红；修好后确认变绿。
@@ -182,6 +208,7 @@ updates:
 5. **拒绝非本应用文件**：导入一个普通 JSON（如 `package.json`）应明确报错，且题库不变。
 6. `npm run lint`、`npm run format:check`、`npm test`、`npm run build` 全部通过。
 7. 新增测试覆盖：导出结构（含 `schemaVersion`）、导入整体校验、逐条校验、两种冲突策略。
+8. **Node 版本声明一致**：全仓 grep `22.12` 应只剩 `package-lock.json`（若 lockfile 内嵌了 `engines`），源码与文档中不再出现；`^22.13.0 || ^24.0.0 || >=26.0.0` 与所有依赖的 `engines` 兼容（用 semver 复验，0 个冲突）。
 
 ## 6. 风险与回滚
 
