@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/logo-blue.svg" width="120" height="120" alt="AlgoRhythm Logo" />
+</p>
+
 # AlgoRhythm
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
