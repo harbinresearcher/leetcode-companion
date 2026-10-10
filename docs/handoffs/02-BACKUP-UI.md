@@ -1,10 +1,10 @@
 # 会话二：题库备份界面
 
-你负责备份用户流程。总架构会话负责跨模块决策；不要修改备份核心。先读 `docs/handoffs/00-COORDINATION.md`。
+你负责备份用户流程。总架构会话负责跨模块决策；不要修改备份核心。先读根目录 `FRONTEND-HANDOFF.md`，再读 `docs/handoffs/00-COORDINATION.md`。
 
 ## 开始条件
 
-当前只读准备。收到会话一已推送且四项检查通过的提交 SHA 后，再在同一 `feature/slice-1-design` 上接入真实 API。不新建分支，不 mock 出一个待替换的 backup.ts，不同时提交。
+核心实现 `2ea470d` 已交付，29 项测试通过，并经 PR #2 合入 main（`95a5e10`）。开始条件已满足，可在同一 `feature/slice-1-design` 上接入真实 API。不新建分支，不 mock 出一个待替换的 backup.ts，不同时提交。
 
 ## 本轮交付与文件归属
 
@@ -26,7 +26,7 @@
 - [ ] 点击“开始导入”才写库，取消或关闭预览零写入。同步 ref 锁与按钮禁用共同防重复确认；失败保留可重试预览，不显示假成功。
 - [ ] 完成后显示真实 added/overwritten/skipped/忽略数，依赖 useLiveQuery 更新列表。同一文件可再次选择，清理文件输入值。
 - [ ] 弹窗可键盘操作、具备 dialog 语义，初始焦点、Tab 焦点范围与关闭后焦点恢复正确；移动端不溢出。不得用原生 confirm 承载带策略选项的预览。
-- [ ] 定向格式化本文件，运行四项质量检查，提交推送，再回读 PR #2 最新 SHA 的 CI。
+- [ ] 定向格式化本文件，运行四项质量检查，提交推送，再回读 当前 UI PR 最新 SHA 的 CI。
 
 ## 浏览器验收
 
@@ -35,7 +35,7 @@
 ## 工作区与不可越过的边界
 
 - 仓库：`harbinresearcher/algorhythm`。本地：`D:\mydata\myproject\algorhythm`。
-- 使用现有 `feature/slice-1-design`，不新建分支，不合并 PR #2，不更改仓库开关。
+- 使用现有 `feature/slice-1-design`，不新建分支，不自行合并 UI PR，不更改仓库开关。
 - 先读根目录 `AGENTS.md`、`CODEX-HANDOFF.md`、`docs/STATUS.md`、`docs/ROADMAP.md`，再读本任务引用的规格。
 - 规格来源：`docs/superpowers/specs/2026-10-10-slice-1-ci-and-data-backup-design.md` 附录 A。函数签名、白名单、四类报错与 UI 文案照抄；本文件不另起一套协议。
 - 不加依赖，不改 AI、FSRS、数据库现有行为、工程配置或规格。保留步骤块注释、子步骤注释与动作日志，不记录个人题干和密钥。
@@ -57,6 +57,6 @@ npm test
 npm run build
 ```
 
-全部通过后只提交自己的文件，推送现有分支，回读 PR #2 对应 SHA 的 CI 结果。没有启动或未完成的检查不得记成通过。文档和 STATUS 由总架构会话统一更新；模块会话返回结果记录，不编辑公共进度文档。这是本轮对 AGENTS.md 更新进度要求的明确分工。
+全部通过后只提交自己的文件，推送现有分支，回读当前 UI PR 对应 SHA 的 CI 结果。PR #2 已合并，不会再更新；先查现有 UI PR，不存在才创建。没有启动或未完成的检查不得记成通过。文档和 STATUS 由总架构会话统一更新；模块会话返回结果记录，不编辑公共进度文档。这是本轮对 AGENTS.md 更新进度要求的明确分工。
 
 最终反馈：提交 SHA、修改文件、实际验证结果、未解决问题、交接给下个会话的接口。不要自行启动 P1/P2。

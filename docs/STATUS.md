@@ -140,3 +140,10 @@ npm run dev
 总架构本轮重新运行 lint、format:check、29 项测试、build：全部通过。GitHub 对 `2ea470d` 的 CI 与 CodeQL 已完成并通过。备份界面尚未实现，本次仅合入工程设施与核心 API，不宣称完整备份功能交付；后续界面继续在 feature/slice-1-design 上接入。
 
 本段替代前文“src 备份尚未实施”的当前状态，历史条目保留。PR 合并状态以 GitHub 回读为准。仓库开关、required checks 与 ESLint/tsconfig 严格度未改；不删除工作分支。
+
+
+## 2026-10-10 前端工作说明更新
+
+PR #2 已实际合并，GitHub 回读合并提交为 `95a5e10`，CI 与 CodeQL 全绿，工作分支保留。用户将前端交回 Codex，新增根目录 `FRONTEND-HANDOFF.md` 作为新会话入口，纳入 Impeccable、UI/UX Pro Max、Vercel React/组件规范、按需 Figma/imagegen、web-design-guidelines 和临时浏览器验收。
+
+同步修正 UI 交接里的核心等待条件与已关闭 PR #2 引用。当前仍只允许题库备份页面任务，不授权整站改版。此轮仅整理工作说明，未修改 UI、未调用 Figma/imagegen、未进行新的视觉审查或浏览器测试。
