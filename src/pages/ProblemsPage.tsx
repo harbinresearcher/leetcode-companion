@@ -128,6 +128,7 @@ function ImportPreview({
         </button>
         <button
           className="primary"
+          aria-busy={busy}
           disabled={busy || parsed.valid.length === 0}
           onClick={() => onConfirm(mode)}
         >

@@ -117,7 +117,7 @@ export default function ReviewPage({ goImport }: { goImport: () => void }) {
             <span>本轮已复习 {completed} 题</span>
             <span className="mono">剩余 {queue.length} 题</span>
           </div>
-          <article className="panel review-problem">
+          <article className="panel review-problem" key={current.id}>
             <div className="flex flex-wrap justify-between gap-3 mb-6">
               {current.url && /^https?:\/\//i.test(current.url) && (
                 <a
@@ -153,7 +153,7 @@ export default function ReviewPage({ goImport }: { goImport: () => void }) {
             </div>
           ) : (
             <>
-              <section className="panel">
+              <section className="panel answer-reveal">
                 <Analysis problem={current} />
               </section>
               <div>

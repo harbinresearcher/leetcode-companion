@@ -41,7 +41,7 @@ function Workspace() {
     { key: 'review', label: '复习' },
   ];
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-view={tab}>
       <a className="skip-link" href="#main-content">
         跳到主要内容
       </a>
@@ -71,7 +71,8 @@ function Workspace() {
               Algo<strong>Rhythm</strong>
             </span>
           </a>
-          <nav className="tabs" aria-label="主导航">
+          <nav className="tabs" aria-label="主导航" data-active={tab}>
+            <span className="nav-track" aria-hidden="true" />
             {tabs.map((t) => (
               <button
                 key={t.key}
@@ -99,15 +100,17 @@ function Workspace() {
             {message}
           </p>
         )}
-        {tab === 'import' && (
-          <ImportPage
-            configured={configured}
-            openSettings={() => setSettings(true)}
-            goLibrary={() => setTab('problems')}
-          />
-        )}
-        {tab === 'problems' && <ProblemsPage goImport={() => setTab('import')} />}
-        {tab === 'review' && <ReviewPage goImport={() => setTab('import')} />}
+        <div className="view-stage" key={tab}>
+          {tab === 'import' && (
+            <ImportPage
+              configured={configured}
+              openSettings={() => setSettings(true)}
+              goLibrary={() => setTab('problems')}
+            />
+          )}
+          {tab === 'problems' && <ProblemsPage goImport={() => setTab('import')} />}
+          {tab === 'review' && <ReviewPage goImport={() => setTab('import')} />}
+        </div>
       </main>
       <footer className="site-footer">
         <span>
