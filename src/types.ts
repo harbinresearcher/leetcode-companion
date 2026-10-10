@@ -20,8 +20,6 @@ export interface Problem {
   primaryPatternId: string;
   secondaryPatternIds: string[];
   aiAnalysis: Pick<AnalysisResult, 'coreInsight' | 'skeleton' | 'prerequisites' | 'warnings'>;
-  codeDrafts: Record<string, string>;
-  notes: string;
   fsrsCard: Card;
   createdAt: number;
   updatedAt: number;

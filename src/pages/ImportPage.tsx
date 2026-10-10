@@ -61,8 +61,6 @@ export default function ImportPage({
           prerequisites: data.prerequisites,
           warnings: data.warnings,
         },
-        notes: '',
-        codeDrafts: {},
         fsrsCard: newCard(new Date(now)),
         createdAt: now,
         updatedAt: now,
