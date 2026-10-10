@@ -1,0 +1,417 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-10T13:37:48.731198+00:00",
+  "title": "Design System: AlgoRhythm",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "accent",
+        "tonalRamp": [
+          "oklch(15% 0.16487 261.35)",
+          "oklch(26% 0.16487 261.35)",
+          "oklch(38% 0.16487 261.35)",
+          "oklch(49% 0.16487 261.35)",
+          "oklch(61% 0.16487 261.35)",
+          "oklch(72% 0.16487 261.35)",
+          "oklch(84% 0.16487 261.35)",
+          "oklch(95% 0.16487 261.35)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "accent-hover",
+        "tonalRamp": [
+          "oklch(15% 0.14074 260.68)",
+          "oklch(26% 0.14074 260.68)",
+          "oklch(38% 0.14074 260.68)",
+          "oklch(49% 0.14074 260.68)",
+          "oklch(61% 0.14074 260.68)",
+          "oklch(72% 0.14074 260.68)",
+          "oklch(84% 0.14074 260.68)",
+          "oklch(95% 0.14074 260.68)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "accent-light": {
+        "role": "primary",
+        "displayName": "accent-light",
+        "tonalRamp": [
+          "oklch(15% 0.01608 262.75)",
+          "oklch(26% 0.01608 262.75)",
+          "oklch(38% 0.01608 262.75)",
+          "oklch(49% 0.01608 262.75)",
+          "oklch(61% 0.01608 262.75)",
+          "oklch(72% 0.01608 262.75)",
+          "oklch(84% 0.01608 262.75)",
+          "oklch(95% 0.01608 262.75)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "surface",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(26% 0.00000 89.88)",
+          "oklch(38% 0.00000 89.88)",
+          "oklch(49% 0.00000 89.88)",
+          "oklch(61% 0.00000 89.88)",
+          "oklch(72% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "ground": {
+        "role": "neutral",
+        "displayName": "ground",
+        "tonalRamp": [
+          "oklch(15% 0.00453 258.32)",
+          "oklch(26% 0.00453 258.32)",
+          "oklch(38% 0.00453 258.32)",
+          "oklch(49% 0.00453 258.32)",
+          "oklch(61% 0.00453 258.32)",
+          "oklch(72% 0.00453 258.32)",
+          "oklch(84% 0.00453 258.32)",
+          "oklch(95% 0.00453 258.32)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "text",
+        "tonalRamp": [
+          "oklch(15% 0.03447 260.81)",
+          "oklch(26% 0.03447 260.81)",
+          "oklch(38% 0.03447 260.81)",
+          "oklch(49% 0.03447 260.81)",
+          "oklch(61% 0.03447 260.81)",
+          "oklch(72% 0.03447 260.81)",
+          "oklch(84% 0.03447 260.81)",
+          "oklch(95% 0.03447 260.81)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "muted",
+        "tonalRamp": [
+          "oklch(15% 0.03481 256.10)",
+          "oklch(26% 0.03481 256.10)",
+          "oklch(38% 0.03481 256.10)",
+          "oklch(49% 0.03481 256.10)",
+          "oklch(61% 0.03481 256.10)",
+          "oklch(72% 0.03481 256.10)",
+          "oklch(84% 0.03481 256.10)",
+          "oklch(95% 0.03481 256.10)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "line",
+        "tonalRamp": [
+          "oklch(15% 0.01387 258.35)",
+          "oklch(26% 0.01387 258.35)",
+          "oklch(38% 0.01387 258.35)",
+          "oklch(49% 0.01387 258.35)",
+          "oklch(61% 0.01387 258.35)",
+          "oklch(72% 0.01387 258.35)",
+          "oklch(84% 0.01387 258.35)",
+          "oklch(95% 0.01387 258.35)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "secondary-text": {
+        "role": "neutral",
+        "displayName": "secondary-text",
+        "tonalRamp": [
+          "oklch(15% 0.04558 259.63)",
+          "oklch(26% 0.04558 259.63)",
+          "oklch(38% 0.04558 259.63)",
+          "oklch(49% 0.04558 259.63)",
+          "oklch(61% 0.04558 259.63)",
+          "oklch(72% 0.04558 259.63)",
+          "oklch(84% 0.04558 259.63)",
+          "oklch(95% 0.04558 259.63)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "secondary-line": {
+        "role": "neutral",
+        "displayName": "secondary-line",
+        "tonalRamp": [
+          "oklch(15% 0.02600 255.58)",
+          "oklch(26% 0.02600 255.58)",
+          "oklch(38% 0.02600 255.58)",
+          "oklch(49% 0.02600 255.58)",
+          "oklch(61% 0.02600 255.58)",
+          "oklch(72% 0.02600 255.58)",
+          "oklch(84% 0.02600 255.58)",
+          "oklch(95% 0.02600 255.58)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "input-line": {
+        "role": "neutral",
+        "displayName": "input-line",
+        "tonalRamp": [
+          "oklch(15% 0.02790 255.11)",
+          "oklch(26% 0.02790 255.11)",
+          "oklch(38% 0.02790 255.11)",
+          "oklch(49% 0.02790 255.11)",
+          "oklch(61% 0.02790 255.11)",
+          "oklch(72% 0.02790 255.11)",
+          "oklch(84% 0.02790 255.11)",
+          "oklch(95% 0.02790 255.11)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "code-surface": {
+        "role": "neutral",
+        "displayName": "code-surface",
+        "tonalRamp": [
+          "oklch(15% 0.00454 258.32)",
+          "oklch(26% 0.00454 258.32)",
+          "oklch(38% 0.00454 258.32)",
+          "oklch(49% 0.00454 258.32)",
+          "oklch(61% 0.00454 258.32)",
+          "oklch(72% 0.00454 258.32)",
+          "oklch(84% 0.00454 258.32)",
+          "oklch(95% 0.00454 258.32)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "code-text": {
+        "role": "neutral",
+        "displayName": "code-text",
+        "tonalRamp": [
+          "oklch(15% 0.07185 257.78)",
+          "oklch(26% 0.07185 257.78)",
+          "oklch(38% 0.07185 257.78)",
+          "oklch(49% 0.07185 257.78)",
+          "oklch(61% 0.07185 257.78)",
+          "oklch(72% 0.07185 257.78)",
+          "oklch(84% 0.07185 257.78)",
+          "oklch(95% 0.07185 257.78)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "error-text": {
+        "role": "semantic",
+        "displayName": "error-text",
+        "tonalRamp": [
+          "oklch(15% 0.13126 15.94)",
+          "oklch(26% 0.13126 15.94)",
+          "oklch(38% 0.13126 15.94)",
+          "oklch(49% 0.13126 15.94)",
+          "oklch(61% 0.13126 15.94)",
+          "oklch(72% 0.13126 15.94)",
+          "oklch(84% 0.13126 15.94)",
+          "oklch(95% 0.13126 15.94)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "error-surface": {
+        "role": "semantic",
+        "displayName": "error-surface",
+        "tonalRamp": [
+          "oklch(15% 0.01294 17.38)",
+          "oklch(26% 0.01294 17.38)",
+          "oklch(38% 0.01294 17.38)",
+          "oklch(49% 0.01294 17.38)",
+          "oklch(61% 0.01294 17.38)",
+          "oklch(72% 0.01294 17.38)",
+          "oklch(84% 0.01294 17.38)",
+          "oklch(95% 0.01294 17.38)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "success-text": {
+        "role": "semantic",
+        "displayName": "success-text",
+        "tonalRamp": [
+          "oklch(15% 0.08126 160.49)",
+          "oklch(26% 0.08126 160.49)",
+          "oklch(38% 0.08126 160.49)",
+          "oklch(49% 0.08126 160.49)",
+          "oklch(61% 0.08126 160.49)",
+          "oklch(72% 0.08126 160.49)",
+          "oklch(84% 0.08126 160.49)",
+          "oklch(95% 0.08126 160.49)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      },
+      "success-surface": {
+        "role": "semantic",
+        "displayName": "success-surface",
+        "tonalRamp": [
+          "oklch(15% 0.01070 158.85)",
+          "oklch(26% 0.01070 158.85)",
+          "oklch(38% 0.01070 158.85)",
+          "oklch(49% 0.01070 158.85)",
+          "oklch(61% 0.01070 158.85)",
+          "oklch(72% 0.01070 158.85)",
+          "oklch(84% 0.01070 158.85)",
+          "oklch(95% 0.01070 158.85)"
+        ],
+        "rampSource": "Derived OKLCH preview ramp; not implemented tokens."
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "页面标题",
+        "purpose": "页面任务标题。"
+      },
+      "body": {
+        "displayName": "题干正文",
+        "purpose": "宽松阅读。"
+      },
+      "code": {
+        "displayName": "等宽代码",
+        "purpose": "骨架与代码。"
+      }
+    },
+    "shadows": [
+      {
+        "name": "dialog",
+        "value": "0 24px 80px #162c4d30",
+        "purpose": "模态覆盖层。"
+      },
+      {
+        "name": "toast",
+        "value": "0 10px 30px #182d4b18",
+        "purpose": "导入反馈。"
+      }
+    ],
+    "motion": [
+      {
+        "name": "button-transition",
+        "value": "background 140ms, border-color 140ms",
+        "purpose": "按钮状态；reduce 偏好取消。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tablet",
+        "value": "900px"
+      },
+      {
+        "name": "mobile",
+        "value": "700px"
+      },
+      {
+        "name": "narrow",
+        "value": "360px"
+      }
+    ],
+    "provenance": {
+      "mode": "scan",
+      "conceptSeedRun": false,
+      "figmaProvided": false,
+      "approvedDesignProvided": false,
+      "authority": "用户授权整站重设计；主代理依据 PRODUCT.md 自主选择学习工作台方向，未经逐项颜色或设计稿批准。",
+      "processGap": "reviewer disposition=fix；界面材料 resolved；concept seed/concept-roll 与预设 QUALITY BAR unresolved。完整 skill 流程未通过。"
+    }
+  },
+  "components": [
+    {
+      "name": "导入并解析",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "共享操作按钮，忙碌期间禁用。",
+      "html": "<button class=\"ds-primary\">导入并解析</button>",
+      "css": ".ds-primary{min-height:44px;border-radius:6px;padding:10px 16px;font-size:13px;font-weight:600;border:1px solid transparent;cursor:pointer;transition:background 140ms,border-color 140ms;background: var(--accent, #2459bb);\n  border-color: var(--accent, #2459bb);\n  color: white;}.ds-primary:hover:not(:disabled){background: #194797;\n  border-color: #194797;}.ds-primary:focus-visible { outline:2px solid var(--accent, #2459bb);outline-offset:3px; }.ds-primary:disabled{opacity:.55;cursor:not-allowed} @media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none !important}}"
+    },
+    {
+      "name": "导出备份",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "共享操作按钮，忙碌期间禁用。",
+      "html": "<button class=\"ds-secondary\">导出备份</button>",
+      "css": ".ds-secondary{min-height:44px;border-radius:6px;padding:10px 16px;font-size:13px;font-weight:600;border:1px solid transparent;cursor:pointer;transition:background 140ms,border-color 140ms;min-height: 44px;\n  border-radius: 6px;\n  padding: 10px 16px;\n  font-size: 13px;\n  font-weight: 600;\n  border: 1px solid transparent;\n  white-space: nowrap;}.ds-secondary:hover:not(:disabled){background: #f3f6fa;\n  border-color: #8c9eb7;}.ds-secondary:focus-visible { outline:2px solid var(--accent, #2459bb);outline-offset:3px; }.ds-secondary:disabled{opacity:.55;cursor:not-allowed} @media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none !important}}"
+    },
+    {
+      "name": "文本操作",
+      "kind": "button",
+      "refersTo": "",
+      "description": "低强调操作。",
+      "html": "<button class=\"ds-text\">打开原题</button>",
+      "css": ".ds-text{min-height: 44px;\n  color: var(--accent, #2459bb);\n  background: transparent;\n  border: 0;\n  font-size: 13px;\n  font-weight: 550;\n  padding: 8px;}.ds-text:hover{text-decoration:underline}.ds-text:focus-visible { outline:2px solid var(--accent, #2459bb);outline-offset:3px; } @media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none !important}}"
+    },
+    {
+      "name": "题目输入",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "有文字标签的可调整输入区。",
+      "html": "<label class=\"ds-field\">题目描述<textarea placeholder=\"粘贴完整题干\"></textarea></label>",
+      "css": ".ds-field{display: block;\n  font-size: 13px;\n  font-weight: 600;\n  color: #35445c;}.ds-field textarea{display:block;width:100%;margin-top:8px;padding:12px 14px;color:var(--text,#202a3b);background:var(--surface,#fff);border:1px solid #b7c4d5;border-radius:6px;font-size:14px;font-weight:400;min-height:260px;line-height:1.8;resize:vertical}.ds-field textarea:hover{border-color:#b7c4d5}.ds-field textarea:focus-visible { outline:2px solid var(--accent, #2459bb);outline-offset:3px; } @media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none !important}}"
+    },
+    {
+      "name": "主导航",
+      "kind": "nav",
+      "refersTo": "",
+      "description": "选中页同时有颜色和底线。",
+      "html": "<nav class=\"ds-nav\" aria-label=\"主导航\"><button>导入</button><button aria-current=\"page\" class=\"ds-active\">题库</button><button>复习</button></nav>",
+      "css": ".ds-nav{display:flex;gap:6px;height:72px}.ds-nav button{position:relative;padding:0 20px;color:var(--muted,#59677a);background:transparent;border:0;font-size:14px;cursor:pointer}.ds-nav button:hover{background:#f6f8fb;color:var(--text,#202a3b)}.ds-nav .ds-active{color:var(--accent,#2459bb);font-weight:600}.ds-active:after{position:absolute;bottom:-1px;left:20px;right:20px;height:2px;background:var(--accent,#2459bb);content:\"\"}.ds-nav button:focus-visible { outline:2px solid var(--accent, #2459bb);outline-offset:3px; } @media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none !important}}"
+    },
+    {
+      "name": "模式徽标",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "题目模式的非交互标签，无伪造悬停状态。",
+      "html": "<span class=\"ds-badge\">双指针</span>",
+      "css": ".ds-badge{font-size: 12px;\n  padding: 3px 8px;\n  background: #f1f4f8;\n  border: 1px solid #dce3ed;\n  border-radius: 4px;\n  color: #4f6078;\n  overflow-wrap: anywhere;color: #2754a4;\n  background: var(--accent-light, #eef4ff);\n  border-color: #d2dff5;} @media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none !important}}"
+    },
+    {
+      "name": "阅读面板",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "静态阅读容器，不添加不存在的浮起状态。",
+      "html": "<section class=\"ds-panel\"><h2>独立回忆</h2><p>先想清楚关键条件与结构。</p></section>",
+      "css": ".ds-panel{background: var(--surface, #fff);\n  border: 1px solid var(--line, #dce2eb);\n  border-radius: 8px;\n  padding: 28px;color:var(--text,#202a3b);font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif}.ds-panel h2{font-size:17px;font-weight:600;margin:0 0 12px}.ds-panel p{font-size:14px;line-height:1.9;margin:0} @media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none !important}}"
+    },
+    {
+      "name": "评分按钮",
+      "kind": "button",
+      "refersTo": "",
+      "description": "揭示后提供回忆表现评分。",
+      "html": "<button class=\"ds-rating\"><strong>记住了</strong><span>独立完成</span></button>",
+      "css": ".ds-rating{background: var(--surface, #fff);\n  border: 1px solid #bdc9d9;\n  border-radius: 6px;\n  padding: 16px 12px;\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  gap: 6px;\n  color: var(--text, #202a3b);cursor:pointer}.ds-rating strong{font-size:14px;color:var(--accent,#2459bb)}.ds-rating span{color:var(--muted,#59677a);font-size:12px}.ds-rating:hover:not(:disabled){background: #f1f5fc;\n  border-color: #8299bc;}.ds-rating:focus-visible { outline:2px solid var(--accent, #2459bb);outline-offset:3px; }.ds-rating:disabled{opacity:.55;cursor:not-allowed} @media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none !important}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "学习工作台",
+    "overview": "学习工作台围绕题干、洞察和回忆展开。白色阅读面置于冷灰背景，深色字保持主导，蓝色标明操作和选中状态。紧凑导航与分隔题目行维持连续阅读，不用宣传区抢占首屏。\n\n本文件以当前源码作 scan-mode 提取。方向由主代理依据用户整站重设计委托与 PRODUCT.md 的学习任务自主选择，并非用户逐项批准颜色或设计稿；“学习工作台”是描述性名称，未经过独立命名审批。本轮没有运行 concept seed 或 seeded concept exploration，没有 Figma 或批准设计稿。收尾 reviewer 的最终 disposition 为 fix：界面材料问题已 resolved，concept seed/concept-roll 与预先设定 QUALITY BAR 仍 unresolved。此处记录流程缺口，不追认未发生的探索或批准，不声称完整 skill 验收通过。",
+    "keyCharacteristics": [
+      "白色阅读面、冷灰底与深色正文。",
+      "蓝色主操作和选中标记。",
+      "题库使用同一容器内的分隔行。",
+      "先独立回忆，再揭示分析并评分。"
+    ],
+    "rules": [
+      {
+        "name": "The Action Rule",
+        "body": "蓝色强调操作与选中状态，题干正文保持深色。",
+        "section": "colors"
+      },
+      {
+        "name": "The Recall Rule",
+        "body": "分析和评分不得先于用户揭示答案。",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "保留语义标签、可见焦点和可操作的原生模态。",
+      "题干控制阅读宽度，代码只在代码块内部横向滚动。",
+      "保留写入前确认、忙碌禁用和失败提示。"
+    ],
+    "donts": [
+      "不要新增仪表盘、掌握度、账号或其他业务功能。",
+      "不要用装饰替代题干、分析与实际操作。",
+      "不要把未运行的真实 AI 验收或概念探索写成已完成。"
+    ]
+  }
+}

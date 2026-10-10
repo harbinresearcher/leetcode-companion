@@ -94,37 +94,48 @@ export default function ImportPage({
               setError('');
             }}
           >
-            ×
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              aria-hidden="true"
+            >
+              <path d="m6 6 12 12M18 6 6 18" />
+            </svg>
           </button>
         </div>
       )}
       <div className="space-y-6">
         <div className="page-heading">
-          <p className="eyebrow">从一道题，找到一类解法</p>
-          <h1>
-            导入你的下一道题<span className="gold">.</span>
-          </h1>
-          <p className="muted">粘贴题目，提炼模式。下次遇见，从理解开始。</p>
+          <h1>导入题目</h1>
+          <p className="muted">粘贴题干或原题链接，提炼解题模式并加入复习。</p>
         </div>
         <form className="panel space-y-5" onSubmit={submit}>
           <div className="panel-heading">
             <h2>题目内容</h2>
-            <span className="mono muted text-xs">TEXT → PATTERN</span>
+            <span className="muted text-xs">支持题干与公开链接</span>
           </div>
           <label className="field">
             原题链接 <span className="muted font-normal">与描述二选一</span>
             <input
               type="url"
+              name="problem-url"
+              spellCheck={false}
+              autoComplete="off"
               value={url}
               disabled={busy}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://leetcode.cn/problems/..."
+              placeholder="https://leetcode.cn/problems/…"
             />
           </label>
           <label className="field">
             题目描述
             <textarea
               aria-label="题目描述"
+              name="problem-description"
               rows={11}
               value={text}
               disabled={busy}
@@ -142,7 +153,7 @@ export default function ImportPage({
             <div className="notice flex items-center justify-between gap-3">
               <span>先连接模型，开始分析题目。</span>
               <button type="button" className="text-button" onClick={openSettings}>
-                配置 AI →
+                配置 AI
               </button>
             </div>
           )}
@@ -151,7 +162,7 @@ export default function ImportPage({
             className="primary w-full"
             disabled={busy || (!text.trim() && !url.trim()) || !configured}
           >
-            {busy ? '正在分析并保存…' : '导入并解析 →'}
+            {busy ? '正在分析并保存…' : '导入并解析'}
           </button>
           <p className="muted text-xs text-center" aria-live="polite">
             {busy
@@ -163,11 +174,11 @@ export default function ImportPage({
           <section className="panel result" aria-live="polite">
             <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
               <div>
-                <p className="success text-xs mb-2">已保存到题库</p>
                 <h2>{result.title}</h2>
+                <p className="success text-xs mt-2">已保存到题库</p>
               </div>
               <button className="secondary" onClick={goLibrary}>
-                查看题库 →
+                查看题库
               </button>
             </div>
             <Analysis problem={result} />
@@ -176,8 +187,7 @@ export default function ImportPage({
       </div>
       <aside className="space-y-6 import-aside">
         <section className="panel path-panel">
-          <p className="eyebrow">学习路径</p>
-          <h2>做过，还要记得住。</h2>
+          <h2>导入后如何学习</h2>
           <ol className="learning-path">
             <li>
               <span>01</span>
@@ -201,16 +211,12 @@ export default function ImportPage({
               </div>
             </li>
           </ol>
-          <div className="path-note">
-            不追求刷过多少题。
-            <br />
-            关注能独立解决哪类题。
-          </div>
+          <p className="path-note">题目和复习进度保存在此浏览器，可在题库导出备份。</p>
         </section>
         <section className="panel">
           <div className="panel-heading">
             <h2>核心模式</h2>
-            <span className="mono muted text-xs">16 PATTERNS</span>
+            <span className="muted text-xs">16 种</span>
           </div>
           <div className="pattern-grid">
             {PATTERNS.map((p) => (

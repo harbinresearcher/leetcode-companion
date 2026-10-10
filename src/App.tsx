@@ -41,7 +41,10 @@ function Workspace() {
     { key: 'review', label: '复习' },
   ];
   return (
-    <>
+    <div className="app-shell">
+      <a className="skip-link" href="#main-content">
+        跳到主要内容
+      </a>
       <header className="site-header">
         <div className="header-inner">
           <a
@@ -52,7 +55,18 @@ function Workspace() {
               setTab('import');
             }}
           >
-            <span className="brand-mark">{'[ar]'}</span>
+            <svg
+              className="brand-mark"
+              viewBox="0 0 32 32"
+              aria-hidden="true"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 23 11 9l6 14M7 18h8M21 23V13m0 5c0-4 3-5 6-5" />
+            </svg>
             <span>
               Algo<strong>Rhythm</strong>
             </span>
@@ -74,12 +88,12 @@ function Workspace() {
             ))}
           </nav>
           <button className="settings-button" onClick={() => setSettings(true)}>
-            <span className={`status-dot ${configured ? 'connected' : ''}`} />
+            <span className={`status-dot ${configured ? 'connected' : ''}`} aria-hidden="true" />
             <span>AI 设置</span>
           </button>
         </div>
       </header>
-      <main className="workspace">
+      <main className="workspace" id="main-content" tabIndex={-1}>
         {message && (
           <p className="success mb-4 text-sm" role="status">
             {message}
@@ -97,10 +111,10 @@ function Workspace() {
       </main>
       <footer className="site-footer">
         <span>
-          <span className="status-dot connected" />
+          <span className="status-dot connected" aria-hidden="true" />
           本地题库 · 无需账号
         </span>
-        <span className="mono">LEARN THE PATTERN.</span>
+        <span>AlgoRhythm</span>
       </footer>
       {settings && (
         <Settings
@@ -111,7 +125,7 @@ function Workspace() {
           }}
         />
       )}
-    </>
+    </div>
   );
 }
 export default function App() {
