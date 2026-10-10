@@ -818,10 +818,41 @@ git add docs/STATUS.md
 git commit -m "docs: record slice 1 verification results"
 ```
 
-- [ ] **Step 6: 合并 PR 并删除分支**
+- [x] **Step 6: 合并 —— 改为分两次合并（与初版计划不同，理由见下）**
 
-Run:
+初版计划写的是"Task 5–9 全做完后一次性合并"。执行后建议**改为两步**：
+
+**6a. 先合并工程侧这一半（需要用户确认）**
+
 ```bash
 gh pr merge 2 --repo harbinresearcher/algorhythm --squash --delete-branch
 ```
-Expected: PR #2 合入 main，远端分支 `feature/slice-1-design` 被删除。
+
+理由：**CI 只有在 main 上才有意义**。在合并之前，工作流只存在于 `feature/slice-1-design` 分支上，`main` 的任何提交都完全没有验证。而且本 PR 现在已是 10 个文件 / 1300+ 行（含规格与计划文档），再塞进备份功能会违反"PR 要小"。
+
+**6b. 备份功能另开一个 PR**
+
+在这条分支（或从合并后的 main 新建分支）上完成 Task 5–9，单独提 PR。这样备份功能会有**自己的 CI 运行**，验证更干净。
+
+> 若用户坚持按原计划一次性合并，则跳过 6a，先完成 Task 5–9 再合并。
+
+---
+
+## 执行状态（2026-10-10）
+
+| Task | 归属 | 状态 |
+| --- | --- | --- |
+| 1 CI 工作流 | 我 | ✅ 已完成，见 Step 2 证据 |
+| 2 dependabot | 我 | ✅ 已完成，GitHub 格式校验 pass |
+| 3 Node 版本修正 | 我 | ✅ 已完成，semver 复验 0 冲突 |
+| 4 规则与进度修订 | 我 | ✅ 已完成 |
+| 5–9 `src/` 备份实现 | Codex | ⬜ 未开始（等交接） |
+| 10 验收 | 我 | 🔶 部分完成：Step 1/2/4/5 已做，Step 3 中依赖备份功能的条目待 Task 5–9 完成后补 |
+
+**已完成的验证证据**：
+
+- CI 在 PR #2 上首次运行，job `lint / format / test / build` 的 9 个步骤全部 success。
+- **门禁有效性（lint）**：一次性分支 + 草稿 PR #3 故意引入未使用变量 → CI 精确地在 `Run npm run lint` 失败（run `38020663342`）。随后关闭 PR #3 并删除分支。
+- **门禁有效性（test）**：本地放入一个必然失败的测试，`npm test` 退出码为 **1**，`npx vitest run` 亦为 **1**；移除后恢复 **0**。故 CI 的 test 步骤是真门。
+  > 注意：用 `... | Select-Object -First N` 过滤输出会让管道提前终止，`$LASTEXITCODE` 失真为 0。必须先完整跑完并立刻取码，再筛输出。
+- Node 版本：semver 逐个校验 124 个依赖，`22.13.0` 与 `24.0.0` 均 0 个不满足（修正前 `22.12.0` 有 10 个）。
