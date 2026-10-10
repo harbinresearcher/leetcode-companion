@@ -1,6 +1,7 @@
-"""生成 LCC (LeetCode Companion) 的 GitHub 社交预览图（1280x640）。
+"""生成 AlgoRhythm 的 GitHub 社交预览图（1280x640）。
 
 配色取自 src/index.css：底色 #101419、正文 #e8e8e3、强调 #dcb967。
+输出到脚本同级目录的 social-preview.png，与本地仓库目录名无关。
 """
 
 from __future__ import annotations
@@ -16,13 +17,15 @@ W, H = 1280, 640
 BG = (16, 20, 25)
 INK = (232, 232, 227)
 GOLD = (220, 185, 103)
-GOLD_DIM = (150, 126, 70)
 MUTED = (154, 164, 174)
 MUTED_DARK = (127, 138, 149)
 FAINT = (107, 118, 129)
 
 FONT_DIR = Path("C:/Windows/Fonts")
-OUT = Path(r"D:\mydata\myproject\leetcode-companion\docs\assets\social-preview.png")
+OUT = Path(__file__).resolve().parent / "social-preview.png"
+
+LEFT = 80
+TEXT_X = LEFT + 76 + 28
 
 
 def font(name: str, size: int) -> ImageFont.FreeTypeFont:
@@ -58,8 +61,7 @@ def build_background() -> Image.Image:
     grid[:, ::40, :] = 16
     base += grid
 
-    img = Image.fromarray(np.clip(base, 0, 255).astype(np.uint8), "RGB")
-    return img
+    return Image.fromarray(np.clip(base, 0, 255).astype(np.uint8), "RGB")
 
 
 def draw_pattern_graph(img: Image.Image) -> None:
@@ -118,41 +120,46 @@ def main() -> None:
     # 顶部金色细条。
     d.rectangle([0, 0, W, 4], fill=GOLD)
 
-    LEFT = 80
-
-    # 品牌徽标。
-    badge = [LEFT, 78, LEFT + 76, 78 + 76]
+    # 品牌徽标：与应用头部的 [ar] 品牌标记一致。
+    badge = [LEFT, 74, LEFT + 76, 74 + 76]
     d.rounded_rectangle(badge, radius=18, fill=(20, 25, 31), outline=GOLD, width=2)
-    f_badge = font("consolab.ttf", 27)
-    bb = d.textbbox((0, 0), "LCC", font=f_badge)
+    f_badge = font("consolab.ttf", 25)
+    bb = d.textbbox((0, 0), "[ar]", font=f_badge)
     d.text((badge[0] + (76 - (bb[2] - bb[0])) / 2 - bb[0],
             badge[1] + (76 - (bb[3] - bb[1])) / 2 - bb[1]),
-           "LCC", font=f_badge, fill=GOLD)
+           "[ar]", font=f_badge, fill=GOLD)
 
-    text_x = LEFT + 76 + 28
-    d.text((text_x, 84), "LeetCode Companion", font=font("msyhbd.ttc", 46), fill=INK)
-    d.text((text_x, 140), "把刷题变成刷模式", font=font("msyh.ttc", 25), fill=GOLD)
+    # 字标：Algo 常规 + Rhythm 加粗，与应用头部同构。
+    f_algo = font("msyh.ttc", 46)
+    f_rhythm = font("msyhbd.ttc", 46)
+    d.text((TEXT_X, 80), "Algo", font=f_algo, fill=INK)
+    algo_w = d.textbbox((0, 0), "Algo", font=f_algo)[2]
+    d.text((TEXT_X + algo_w, 80), "Rhythm", font=f_rhythm, fill=INK)
 
-    d.line([LEFT, 214, 780, 214], fill=(38, 46, 56), width=1)
+    d.text((TEXT_X, 142), "在算法里找到你的节奏", font=font("msyh.ttc", 25), fill=GOLD)
+    d.text((TEXT_X, 178), "Find your rhythm in algorithms.",
+           font=font("consola.ttf", 18), fill=MUTED_DARK)
 
-    d.text((LEFT, 244), "AI 提炼解题模式 · 主动回忆 · FSRS 间隔重复",
+    d.line([LEFT, 226, 800, 226], fill=(38, 46, 56), width=1)
+
+    d.text((LEFT, 252), "AI 提炼解题模式 · 主动回忆 · FSRS 间隔重复",
            font=font("msyh.ttc", 25), fill=MUTED)
 
     f_body = font("msyh.ttc", 21)
-    d.text((LEFT, 300), "粘贴题目 → 归纳为 16 种算法模式 → 存入本地题库",
+    d.text((LEFT, 308), "粘贴题目 → 归纳为 16 种算法模式 → 存入本地题库",
            font=f_body, fill=MUTED_DARK)
-    d.text((LEFT, 340), "→ 先独立回忆 → 揭示洞察与骨架 → FSRS 安排下次复习",
+    d.text((LEFT, 348), "→ 先独立回忆 → 揭示洞察与骨架 → FSRS 安排下次复习",
            font=f_body, fill=MUTED_DARK)
 
     f_chip = font("msyh.ttc", 18)
     x = LEFT
     for label in ("React 18", "TypeScript", "Vite 6", "Tailwind 4",
                   "Dexie", "ts-fsrs", "纯前端 · 本地优先"):
-        x = chip(d, x, 452, label, f_chip)
+        x = chip(d, x, 458, label, f_chip)
 
-    d.text((LEFT, 546), "无需后端 · 无需账号 · Key 只留在你自己的浏览器",
+    d.text((LEFT, 550), "无需后端 · 无需账号 · Key 只留在你自己的浏览器",
            font=font("msyh.ttc", 19), fill=FAINT)
-    d.text((LEFT, 580), "github.com/harbinresearcher/leetcode-companion",
+    d.text((LEFT, 584), "github.com/harbinresearcher/algorhythm",
            font=font("consola.ttf", 17), fill=(88, 98, 108))
 
     OUT.parent.mkdir(parents=True, exist_ok=True)

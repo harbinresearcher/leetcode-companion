@@ -1,7 +1,8 @@
 {
-  "name": "leetcode-companion",
+  "name": "algorhythm",
   "version": "0.1.0",
   "private": true,
+  "description": "AlgoRhythm — AI 驱动的算法学习伴侣：把题目提炼成 16 种解题模式，用主动回忆 + FSRS 间隔重复真正记住套路。",
   "license": "MIT",
   "type": "module",
   "scripts": {

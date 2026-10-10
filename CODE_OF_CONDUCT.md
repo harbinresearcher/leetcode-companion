@@ -39,7 +39,7 @@
 如遇到辱骂、骚扰或其他不可接受的行为，请向负责执行的社区维护者报告：
 
 - **非敏感事项**：在仓库 Issue 中 @harbinresearcher。
-- **需要私密处理的事项**（涉及人身安全、隐私或敏感细节）：使用仓库 [Security 标签页](https://github.com/harbinresearcher/leetcode-companion/security) 的 **Report a vulnerability** 渠道，我们会把行为准则投诉与安全报告同等保密处理。
+- **需要私密处理的事项**（涉及人身安全、隐私或敏感细节）：使用仓库 [Security 标签页](https://github.com/harbinresearcher/algorhythm/security) 的 **Report a vulnerability** 渠道，我们会把行为准则投诉与安全报告同等保密处理。
 
 所有投诉都会被及时、公正地审查和调查。社区维护者有义务尊重任何事件报告者的隐私和安全。
 

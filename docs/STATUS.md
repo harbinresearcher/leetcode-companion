@@ -1,10 +1,10 @@
-# LCC 当前进度
+# AlgoRhythm 当前进度
 
-更新日期：2026-10-09（Asia/Shanghai）。每次工作结束必须更新此文件；当前事实以此为准，未来计划见 [ROADMAP.md](ROADMAP.md)。
+更新日期：2026-10-10（Asia/Shanghai）。每次工作结束必须更新此文件；当前事实以此为准，未来计划见 [ROADMAP.md](ROADMAP.md)。
 
 ## 当前阶段
 
-第一阶段 / P0：本地 MVP 功能已实现，模拟 AI 闭环已验证；真实 AI 分类验收尚未完成。仓库已公开（MIT），`main` 已启用分支保护；本轮完成公开仓库的安全加固与社区健康文件。
+第一阶段 / P0：本地 MVP 功能已实现，模拟 AI 闭环已验证；真实 AI 分类验收尚未完成。仓库已公开（MIT）并更名为 **AlgoRhythm**（仓库名 `algorhythm`），`main` 已启用分支保护；上一轮完成公开仓库的安全加固与社区健康文件。
 
 ## 已完成
 
@@ -20,6 +20,7 @@
 - README 增加徽章与「贡献与支持」入口，并修正“仓库私有”“暂不启用 CI”等过时表述；CONTRIBUTING 补充分支保护、推送保护与社区规范。
 - `main` 分支保护：要求 PR 合入、禁止强推与删除分支，仓库所有者保留应急旁路。
 - 仓库描述、16 个话题标签、GitHub Discussions（含 Q&A 分类）与社交预览图素材。
+- 2026-10-10 项目更名为 **AlgoRhythm**：应用品牌（`[ar] AlgoRhythm`）、`package.json` 包名、页面标题、日志前缀、内部存储标识、全部文档与五张运行截图同步更新；`docs/phase-1-plan.md` 标注为历史存档并保留正文原貌。
 
 ## 进行中
 
@@ -34,6 +35,16 @@
 - 手动确认 Settings → Advanced Security 中的 validity checks 与 non-provider patterns（API 无法开启）。
 
 ## 本轮验证
+
+更名轮（2026-10-10）：
+
+- 全仓检索旧名（`LCC` / `LeetCode Companion` / `leetcode-companion` / `CompanionDB` / `[Companion]` / `companion.ai.v1`）：除 `CHANGELOG.md`（记录本次更名）、`docs/HANDOFF.md`（历史条目）与 `docs/phase-1-plan.md`（历史存档）三处有意保留外，无残留。
+- 命名脚本对 17 个文件执行 32 处替换，每处都带出现次数断言，全部命中，无静默漏改。
+- 本提交已 rebase 到 `f18fe94`（PR #1：链接导入修复）之上。4 处冲突手工合并：ARCHITECTURE 的存储标识改名与 `source.ts` / Jina Reader 说明合并保留；测试改用 `AlgoRhythmDB` 且保留 `resolveProblemSource`；两张截图取远端较新版本后按新品牌重拍。
+- npm run lint、npm run format:check、npm test（17 项）、npm run build、git diff --check：全部通过。
+- 隔离浏览器实测（合并后的新 UI）：`a.brand` 渲染为 `[ar] AlgoRhythm`，页面标题为 `AlgoRhythm`，控制台无错误；导入三数之和 / 无重复字符的最长子串 / 两数之和成功，成功浮层为「导入成功：三数之和」。AI 响应由请求拦截伪造，含新契约要求的 `isAlgorithmProblem: true`。
+- 五张运行截图在合并后代码上重拍：import 1345×1775、library 1360×1040、review-recall 1360×1040、review 1345×1798、mobile 375×1907。含滚动条的整页截图宽度比视口少 15px，属预期。
+- 社交预览图重新生成：1280×640，字标改为 Algo 常规 + Rhythm 加粗，徽标为 `[ar]`，底部地址为新仓库名。
 
 仓库公开与安全配置轮（2026-10-09）：
 

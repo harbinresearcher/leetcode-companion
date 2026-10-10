@@ -3,14 +3,14 @@ import type { Problem } from './types';
 import { review, type Grade } from './fsrs';
 import { logger } from './logger';
 
-export class CompanionDB extends Dexie {
+export class AlgoRhythmDB extends Dexie {
   problems!: Table<Problem, string>;
-  constructor(name = 'leetcode-companion') {
+  constructor(name = 'algorhythm') {
     super(name);
     this.version(1).stores({ problems: 'id, primaryPatternId, createdAt, fsrsCard.due' });
   }
 }
-export const db = new CompanionDB();
+export const db = new AlgoRhythmDB();
 export const getAllProblems = () => db.problems.orderBy('createdAt').reverse().toArray();
 export const getDueProblems = (now = new Date()) =>
   db.problems.where('fsrsCard.due').belowOrEqual(now).toArray();

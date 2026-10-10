@@ -33,4 +33,4 @@ P3：浏览器扩展、Tauri 桌面 App、云同步。
 
 历史参考项目：LeetLens、Leetcode-Mastery-Scheduler、CodeNote Helper、LeetSRS、InterviewForge、py-fsrs / ts-fsrs。参考成熟零件，不未经审查直接复制代码。
 
-原讨论中许可证候选为 MIT 或 Apache 2.0。用户于 2026-10-09 授权完善仓库时确定使用 MIT；仓库仍私有，公开发布尚未授权。
+原讨论中许可证候选为 MIT 或 Apache 2.0。用户于 2026-10-09 授权完善仓库时确定使用 MIT；仓库已于 2026-10-09 公开。2026-10-10 项目更名为 AlgoRhythm，仓库名 `algorhythm`。

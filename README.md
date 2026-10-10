@@ -1,4 +1,4 @@
-# LCC (LeetCode Companion)
+# AlgoRhythm
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%5E22.12%20%7C%7C%20%5E24%20%7C%7C%20%3E%3D26-339933?logo=nodedotjs&logoColor=white)](package.json)
@@ -8,17 +8,19 @@
 [![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![FSRS](https://img.shields.io/badge/FSRS-ts--fsrs-8B5CF6)](https://github.com/open-spaced-repetition/ts-fsrs)
 
-AI 驱动的算法刷题伴侣，把刷题变成刷模式。纯前端、本地运行。
+> **AlgoRhythm** 是一款开源的算法学习伴侣。它通过 AI 将题目归类到 16 种核心模式，并结合 FSRS 间隔重复算法，帮你掌握解题的“节奏”，真正摆脱“刷完就忘”。
 
-粘贴题目 → AI 提炼模式与解法 → 存入本地题库 → 主动回忆 → FSRS 安排下次复习。
+*Find your rhythm in algorithms.* 名字读作 Algo-Rhythm（Algorithm + Rhythm）；搜索项目时注意拼写不是 AlgoRythm。
+
+纯前端、本地运行。粘贴题目 → AI 提炼模式与解法 → 存入本地题库 → 主动回忆 → FSRS 安排下次复习。
 
 ## 快速开始
 
 需要 Node.js 22.12+（22.x）、24.x 或 26+。仓库公开，直接克隆即可。
 
 ```sh
-git clone https://github.com/harbinresearcher/leetcode-companion.git
-cd leetcode-companion
+git clone https://github.com/harbinresearcher/algorhythm.git
+cd algorhythm
 npm install && npm run dev
 ```
 

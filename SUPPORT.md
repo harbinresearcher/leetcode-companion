@@ -1,6 +1,6 @@
 # 获取帮助
 
-LCC（LeetCode Companion）是个人维护的学习项目，不提供商业级技术支持，也没有服务等级承诺。不过提问前做一点功课，能让问题解决得快很多。
+AlgoRhythm 是个人维护的学习项目，不提供商业级技术支持，也没有服务等级承诺。不过提问前做一点功课，能让问题解决得快很多。
 
 ## 先查文档
 
@@ -13,7 +13,7 @@ LCC（LeetCode Companion）是个人维护的学习项目，不提供商业级�
 
 ## 提问与讨论
 
-使用 GitHub Discussions 的 **Q&A** 分类：<https://github.com/harbinresearcher/leetcode-companion/discussions>
+使用 GitHub Discussions 的 **Q&A** 分类：<https://github.com/harbinresearcher/algorhythm/discussions>
 
 适合放在 Discussions 的内容：使用中的困惑、“这个报错是什么意思”、想法讨论、展示你的用法。
 
@@ -27,13 +27,13 @@ LCC（LeetCode Companion）是个人维护的学习项目，不提供商业级�
 
 ## 报告 Bug
 
-使用 [Bug 报告模板](https://github.com/harbinresearcher/leetcode-companion/issues/new?template=bug_report.md) 提交 Issue。
+使用 [Bug 报告模板](https://github.com/harbinresearcher/algorhythm/issues/new?template=bug_report.md) 提交 Issue。
 
 提交前请先确认问题能在当前 `main` 上复现，并说明是开发服务器还是构建产物（`npm run preview`）；两者的浏览器存储是分开的。
 
 ## 功能建议
 
-使用 [功能建议模板](https://github.com/harbinresearcher/leetcode-companion/issues/new?template=feature_request.md) 提交。
+使用 [功能建议模板](https://github.com/harbinresearcher/algorhythm/issues/new?template=feature_request.md) 提交。
 
 请先读 [路线图](docs/ROADMAP.md)：`- [ ]` 只表示“有可能做”，**不表示已授权开发**。第一阶段明确不做后端、账号、自动抓取、浏览器扩展、代码编辑器、掌握度图表与面试模拟，相关建议可能被推迟。
 

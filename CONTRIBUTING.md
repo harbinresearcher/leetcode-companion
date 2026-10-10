@@ -9,8 +9,8 @@
 Node.js 22.12+（22.x）、24.x 或 26+，使用 npm。仓库公开，克隆即可开始。
 
 ```sh
-git clone https://github.com/harbinresearcher/leetcode-companion.git
-cd leetcode-companion
+git clone https://github.com/harbinresearcher/algorhythm.git
+cd algorhythm
 npm install && npm run dev
 ```
 

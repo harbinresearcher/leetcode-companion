@@ -183,7 +183,7 @@ export function loadAIConfig(): AIConfig {
   logger.info('开始读取 AI 配置');
   // 1.1 配置损坏时允许用户重新保存，不泄露内容
   try {
-    const raw = localStorage.getItem('companion.ai.v1');
+    const raw = localStorage.getItem('algorhythm.ai.v1');
     const data = raw ? JSON.parse(raw) : {};
     const config = { ...defaults };
     for (const key of ['apiKey', 'baseUrl', 'model'] as const)
@@ -207,7 +207,7 @@ export function saveAIConfig(config: AIConfig): void {
   // 1.1 写入失败由设置页展示，不报告虚假成功
   const clean = validateConfig(config);
   try {
-    localStorage.setItem('companion.ai.v1', JSON.stringify(clean));
+    localStorage.setItem('algorhythm.ai.v1', JSON.stringify(clean));
   } catch {
     throw new Error('无法保存配置，请检查浏览器是否允许本地存储。');
   }

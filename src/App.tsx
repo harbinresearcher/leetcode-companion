@@ -52,9 +52,9 @@ function Workspace() {
               setTab('import');
             }}
           >
-            <span className="brand-mark">{'[c]'}</span>
+            <span className="brand-mark">{'[ar]'}</span>
             <span>
-              LeetCode <strong>Companion</strong>
+              Algo<strong>Rhythm</strong>
             </span>
           </a>
           <nav className="tabs" aria-label="主导航">

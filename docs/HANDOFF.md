@@ -5,6 +5,7 @@
 ## 历史基线
 
 - 项目已更名为 LCC (LeetCode Companion)，仓库名 leetcode-companion。
+- 2026-10-10 再次更名为 **AlgoRhythm**，仓库名 `algorhythm`；上一条的 LCC 命名已属历史，旧仓库地址由 GitHub 自动跳转。应用品牌、包名、存储标识与截图同步更新。
 - 第一阶段源码、测试和五张运行截图包含在 ef78815，已于本轮推送 GitHub main。
 - 原始方案保留在 phase-1-plan.md，实际修正见 implementation.md；以源码和当前 STATUS 为准，不盲目复制旧依赖命令。
 - React 保持 18；Tailwind 最终采用 4 的 Vite 插件；Vitest 采用 5。

@@ -2,7 +2,7 @@ import 'fake-indexeddb/auto';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { analyzeProblem, parseAnalysis } from '../src/ai';
 import { resolveProblemSource } from '../src/source';
-import { CompanionDB, saveReview } from '../src/db';
+import { AlgoRhythmDB, saveReview } from '../src/db';
 import { newCard, Rating } from '../src/fsrs';
 import { PATTERNS } from '../src/patterns';
 import type { Problem } from '../src/types';
@@ -151,7 +151,7 @@ describe('problem source', () => {
 describe('IndexedDB and FSRS', () => {
   it('persists Date values across reopening and atomically prevents duplicate ratings', async () => {
     // 1.2 保存新卡片并重开数据库，验证日期与到期索引
-    const db = new CompanionDB('test-' + crypto.randomUUID());
+    const db = new AlgoRhythmDB('test-' + crypto.randomUUID());
     const now = new Date('2026-10-09T06:00:00Z');
     const problem: Problem = {
       id: crypto.randomUUID(),

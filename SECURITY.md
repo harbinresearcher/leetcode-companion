@@ -1,6 +1,6 @@
 # 安全策略
 
-LCC（LeetCode Companion）是纯前端、本地运行的算法学习工具：没有后端、没有账号，也不收集用户数据。仓库里不保存任何用户凭据。
+AlgoRhythm 是纯前端、本地运行的算法学习工具：没有后端、没有账号，也不收集用户数据。仓库里不保存任何用户凭据。
 
 我们欢迎安全研究，但**请不要用公开 Issue 报告安全问题**——公开 Issue 会立刻把细节暴露给所有人，包括可能的利用者。
 
@@ -17,7 +17,7 @@ LCC（LeetCode Companion）是纯前端、本地运行的算法学习工具：�
 
 使用 GitHub 的私有漏洞报告渠道：
 
-1. 打开仓库的 [Security 标签页](https://github.com/harbinresearcher/leetcode-companion/security)。
+1. 打开仓库的 [Security 标签页](https://github.com/harbinresearcher/algorhythm/security)。
 2. 点击 **Report a vulnerability**。
 3. 填写报告。
 
@@ -56,6 +56,6 @@ LCC（LeetCode Companion）是纯前端、本地运行的算法学习工具：�
 
 ## English
 
-We use GitHub's [private vulnerability reporting](https://github.com/harbinresearcher/leetcode-companion/security) for this repository. Please do **not** open a public issue for security problems — go to the Security tab and choose **Report a vulnerability**.
+We use GitHub's [private vulnerability reporting](https://github.com/harbinresearcher/algorhythm/security) for this repository. Please do **not** open a public issue for security problems — go to the Security tab and choose **Report a vulnerability**.
 
 Note that storing the API key unencrypted in the browser's `localStorage` is a documented design decision for this local-only, backend-free MVP (the key never reaches the repository or the maintainer), so it is not treated as a vulnerability; suggestions to reduce that risk are welcome.

@@ -1,4 +1,4 @@
-# LCC 架构
+# AlgoRhythm 架构
 
 纯前端、本地 Web App。没有后端、账号或云存储；只有题目分析调用用户配置的外部 AI 服务。
 
@@ -51,8 +51,8 @@ UI 通过存储模块读取题目。题库使用响应式查询；复习队列�
 
 ## 数据位置与边界
 
-- IndexedDB `leetcode-companion` / `problems`：题干、标签、分析、卡片和时间戳；`fsrsCard.due` 使用 Date 索引。
-- localStorage `companion.ai.v1`：API Key、Base URL、Model。
+- IndexedDB `algorhythm` / `problems`：题干、标签、分析、卡片和时间戳；`fsrsCard.due` 使用 Date 索引。
+- localStorage `algorhythm.ai.v1`：API Key、Base URL、Model。2026-10-10 更名前为 `companion.ai.v1`，更名后不读取旧键，需要重新填写 AI 设置。
 - 请求：`${baseUrl}/chat/completions`，发送题目正文和约束 Prompt；有链接时先通过 source.ts 请求 Jina Reader。
 
 AI 结果不能视为标准答案；非法 JSON 不入库，字段默认值带警告。密钥未加密，清除站点数据会丢题库，不同访问地址的数据隔离。没有导出、复习日志表或模式掌握度统计，不把未来模块写成已有能力。

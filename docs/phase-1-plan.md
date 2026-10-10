@@ -1,5 +1,7 @@
 # LeetCode Companion 第一阶段执行方案
 
+> **历史存档**：本文件是第一阶段原始执行方案，成文时项目名为 LeetCode Companion（当时简写 LCC）。项目已于 2026-10-10 更名为 **AlgoRhythm**，仓库名 `algorhythm`。为保留历史原貌，正文未做全局改名——其中的项目名、目录名与代码片段均属当时状态。当前名称、范围与依赖请以 [README](../README.md)、[AGENTS.md](../AGENTS.md) 与 [STATUS.md](STATUS.md) 为准。
+
 > 本文档用于交给 AI 编码助手（DSH）执行。目标：**一周内交付一个可本地运行的 Web App MVP**，实现「导入题目 → AI解析模式 → 存入本地库 → FSRS复习」完整闭环。
 
 ---

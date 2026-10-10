@@ -1,10 +1,18 @@
 # 变更日志
 
-本文件记录 LCC（LeetCode Companion）的显著变更。
+本文件记录 AlgoRhythm 的显著变更。
 
 格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
 ## [未发布]
+
+### 变更
+
+- **项目更名为 AlgoRhythm**（Algorithm + Rhythm）。仓库名由 `leetcode-companion` 改为 `algorhythm`，旧地址由 GitHub 自动跳转。
+- 应用品牌标识（`[c] LeetCode Companion` → `[ar] AlgoRhythm`）、`package.json` 包名、页面标题、日志前缀与全部文档同步更新。
+- 内部存储标识一并更名：IndexedDB 库名 `leetcode-companion` → `algorhythm`，localStorage 键 `companion.ai.v1` → `algorhythm.ai.v1`。**这会导致旧数据不被读取**：需要重新填写 AI 设置，此前导入的本地题库也不会再出现在界面中（浏览器里仍留有旧库，但当前版本不读取）。
+- 运行截图按新品牌重新生成。
+- `docs/phase-1-plan.md` 保留成文时的旧名并标注为历史存档。
 
 ### 计划中
 
