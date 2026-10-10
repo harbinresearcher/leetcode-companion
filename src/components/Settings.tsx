@@ -17,13 +17,20 @@ export default function Settings({
      * ========================================================================
      * 步骤1：打开可键盘操作的设置窗口
      * ========================================================================
-     * 目标：原生 dialog；操作：1) 模态显示 2) 卸载时关闭
+     * 目标：原生 dialog；操作：1) 模态显示 2) 卸载时关闭并恢复入口焦点
      */
     logger.info('开始打开 AI 设置');
     // 1.1 原生模态负责焦点约束和 Escape 行为
-    dialog.current?.showModal();
+    const element = dialog.current;
+    const returnFocus =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    element?.showModal();
     logger.info('AI 设置打开完成');
-    return () => dialog.current?.close();
+    return () => {
+      // 1.2 保存元素快照，卸载后 ref 可能已经清空
+      element?.close();
+      returnFocus?.focus();
+    };
   }, []);
 
   function save(event: FormEvent) {
@@ -55,17 +62,25 @@ export default function Settings({
       <form onSubmit={save} className="space-y-5">
         <div className="flex items-center justify-between">
           <div>
-            <p className="eyebrow">连接你的模型</p>
             <h2 id="settings-title">AI 设置</h2>
           </div>
           <button type="button" className="icon-button" onClick={onClose} aria-label="关闭设置">
-            ×
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              aria-hidden="true"
+            >
+              <path d="m6 6 12 12M18 6 6 18" />
+            </svg>
           </button>
         </div>
         <label className="field">
           API Key
           <input
             type="password"
+            name="api-key"
             autoComplete="off"
             required
             value={config.apiKey}
@@ -77,6 +92,9 @@ export default function Settings({
           Base URL
           <input
             type="url"
+            name="base-url"
+            spellCheck={false}
+            autoComplete="off"
             required
             value={config.baseUrl}
             placeholder="https://api.deepseek.com/v1"
@@ -86,6 +104,9 @@ export default function Settings({
         <label className="field">
           Model
           <input
+            name="model"
+            spellCheck={false}
+            autoComplete="off"
             required
             value={config.model}
             placeholder="deepseek-chat"

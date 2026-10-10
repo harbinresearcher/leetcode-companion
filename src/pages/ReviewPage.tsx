@@ -78,11 +78,8 @@ export default function ReviewPage({ goImport }: { goImport: () => void }) {
   return (
     <div className="review-layout space-y-6">
       <div className="page-heading">
-        <p className="eyebrow">先回忆，再看答案</p>
-        <h1>
-          让解法留在脑海里<span className="gold">.</span>
-        </h1>
-        <p className="muted">试着独立推导，按实际回忆表现评分。</p>
+        <h1>复习</h1>
+        <p className="muted">先独立推导，再查看分析，按实际回忆表现评分。</p>
       </div>
       {error && (
         <div className="error" role="alert">
@@ -98,7 +95,6 @@ export default function ReviewPage({ goImport }: { goImport: () => void }) {
         </p>
       ) : !current ? (
         <section className="panel empty">
-          <span className="empty-mark">✓</span>
           <h2>{completed ? '本轮复习完成' : '目前没有到期题目'}</h2>
           <p className="muted">
             {completed
@@ -110,7 +106,7 @@ export default function ReviewPage({ goImport }: { goImport: () => void }) {
               重新加载队列
             </button>
             <button className="primary" onClick={goImport}>
-              导入题目 →
+              导入题目
             </button>
           </div>
           <p className="muted text-xs">选择“忘了”后，题目可能在几分钟后再次到期。</p>
@@ -121,12 +117,27 @@ export default function ReviewPage({ goImport }: { goImport: () => void }) {
             <span>本轮已复习 {completed} 题</span>
             <span className="mono">剩余 {queue.length} 题</span>
           </div>
-          <article className="panel review-problem">
+          <article className="panel review-problem" key={current.id}>
             <div className="flex flex-wrap justify-between gap-3 mb-6">
-              <span className="eyebrow">独立尝试</span>
               {current.url && /^https?:\/\//i.test(current.url) && (
-                <a href={current.url} target="_blank" rel="noreferrer" className="text-sm">
-                  打开原题 ↗
+                <a
+                  href={current.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-sm"
+                >
+                  打开原题{' '}
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17 17 7M7 7h10v10" />
+                  </svg>
                 </a>
               )}
             </div>
@@ -137,12 +148,12 @@ export default function ReviewPage({ goImport }: { goImport: () => void }) {
             <div className="recall-box">
               <p className="muted text-sm">先想清楚：关键条件是什么？用什么结构？为什么成立？</p>
               <button className="primary" onClick={() => setRevealed(true)}>
-                显示答案与洞察 →
+                显示答案与洞察
               </button>
             </div>
           ) : (
             <>
-              <section className="panel">
+              <section className="panel answer-reveal">
                 <Analysis problem={current} />
               </section>
               <div>
