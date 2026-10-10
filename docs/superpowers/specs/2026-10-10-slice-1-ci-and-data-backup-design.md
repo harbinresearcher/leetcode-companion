@@ -97,7 +97,18 @@ jobs:
 
 - 单 job 串行。本地实测四个命令合计约 3 秒，拆 job 只会让总耗时变长（tldraw `checks.yml` 同样是单 job）。
 - Node 固定 `24`。excalidraw / tldraw / cal.com 三家都没有 `.nvmrc`，都用 `engines` 字段；本地是 Node 26，CI 用当前 LTS 24。
-- **已知坑（记录在案）**：`paths-ignore` 会让纯文档 PR 跳过本工作流。将来若把 CI 设为分支保护的 required check，这类 PR 会因"等不到检查"而无法合并。届时的解法是去掉 `paths-ignore` 或改为 job 级 `if`。当前未设 required check，不受影响。
+- **已知坑（已由 GitHub 官方文档确认，不是推测）**：`paths-ignore` 会让纯文档 PR 跳过本工作流。官方原文：
+
+  > *If a workflow is skipped due to **path filtering**, branch filtering or a commit message, then checks associated with that workflow will remain in a **"Pending" state**. A pull request that requires those checks to be successful will be **blocked from merging**.*
+  >
+  > —— <https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs>
+
+  也就是说：**一旦把 CI 设成分支保护的 required check，纯文档 PR 会因为"检查永远停在 Pending"而无法合并。**
+
+  同一机制还会被下面这些提交信息触发，后果一样是 Pending 卡死，设了 required check 之后要避开：
+  `[skip ci]`、`[ci skip]`、`[no ci]`、`[skip actions]`、`[actions skip]`，以及 `skip-checks: true` 提交 trailer。
+
+  解法二选一：**去掉 `paths-ignore`**；或**改成 job 级 `if` 判断**——这样工作流总是运行、总是上报检查，只是内部决定跳过重活。当前未设 required check，不受影响。
 
 ### 4.2 依赖自动化（`.github/dependabot.yml`）
 
