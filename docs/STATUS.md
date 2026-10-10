@@ -37,6 +37,17 @@
 
 ## 本轮验证
 
+切片 1 轮（2026-10-10）：CI 安全网 + Node 版本声明修正
+
+- **CI 首次运行成功**：`CI` 工作流在 PR #2 上由 `pull_request` 事件触发，job `lint / format / test / build` 的 9 个步骤全部 success（Set up job → checkout → setup-node → npm ci → lint → format:check → test → build → 收尾）。
+- **门禁有效性实测**：另开一次性分支 `test/verify-ci-gate`（草稿 PR #3）故意引入一个未使用变量，CI **精确地在 `Run npm run lint` 步骤失败**（运行 `38020663342`，`conclusion: failure`）。随后关闭 PR #3 并删除远端与本地分支，未合并。这条证据说明 CI 是真拦得住的门，不是摆设。
+- `.github/dependabot.yml` 通过 GitHub 自身的格式校验：PR 检查项 `.github/dependabot.yml` 为 `pass`（1s）。
+- PR #2 全部 4 项检查为绿：`lint / format / test / build`、`CodeQL`、`Analyze (javascript-typescript)`、`.github/dependabot.yml`。
+- **Node 版本修正已复验**：用 semver 逐个校验 124 个带 `engines.node` 的依赖 —— Node `22.13.0` 与 `24.0.0` 均为 **0 个不满足**；修正前的 `22.12.0` 有 **10 个不满足**（整个 eslint 10 家族）。
+- 本地实跑：`npm ci`、`npm run lint`、`npm run format:check`、`npm test`（17 项）、`npm run build` 全部通过。
+- 全仓 `22.12` 仅剩两处**记录该缺陷本身**的文档（本文件的变更说明与规格 §4.7），源码与配置已无残留。
+- **未包含在本次提交**：`src/` 下的数据导出/导入实现。按分工交由 Codex，接口与文案见规格附录 A、任务拆解见 `docs/superpowers/plans/2026-10-10-slice-1-ci-and-data-backup.md` 的 Task 5–9。
+
 更名轮（2026-10-10）：
 
 - 全仓检索旧名（`LCC` / `LeetCode Companion` / `leetcode-companion` / `CompanionDB` / `[Companion]` / `companion.ai.v1`）：除 `CHANGELOG.md`（记录本次更名）、`docs/HANDOFF.md`（历史条目）与 `docs/phase-1-plan.md`（历史存档）三处有意保留外，无残留。
