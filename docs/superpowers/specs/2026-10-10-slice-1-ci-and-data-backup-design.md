@@ -29,17 +29,20 @@ AlgoRhythm 目前没有任何自动化质量保证：`lint` / `format:check` / `
 
 ## 3. 交付物
 
-| # | 文件 | 动作 |
-| --- | --- | --- |
-| 1 | `.github/workflows/ci.yml` | 新增 |
-| 2 | `.github/dependabot.yml` | 新增 |
-| 3 | `src/backup.ts` | 新增（导出/导入的纯逻辑，不依赖 React） |
-| 4 | `src/pages/ProblemsPage.tsx` | 修改（加导出/导入按钮与预览弹窗） |
-| 5 | `src/types.ts`、`src/pages/ImportPage.tsx` | 修改（删除死字段） |
-| 6 | `tests/core.test.ts` | 修改（新增导出导入测试） |
-| 7 | `AGENTS.md`、`docs/ROADMAP.md`、`docs/STATUS.md` | 修改（规则与进度） |
-| 8 | `package.json`、`README.md`、`CONTRIBUTING.md`、`docs/STATUS.md` | 修改（修正 Node 版本声明，见 §4.7） |
-| 9 | 远端分支 `fix/import-link-feedback` | ✅ 已完成（2026-10-10 删除，HTTP 204） |
+| # | 文件 | 动作 | 归属 |
+| --- | --- | --- | --- |
+| 1 | `.github/workflows/ci.yml` | 新增 | **我** |
+| 2 | `.github/dependabot.yml` | 新增 | **我** |
+| 3 | `src/backup.ts` | 新增（导出/导入的纯逻辑，不依赖 React） | **Codex** |
+| 4 | `src/pages/ProblemsPage.tsx` | 修改（加导出/导入按钮与预览弹窗） | **Codex** |
+| 5 | `src/types.ts`、`src/pages/ImportPage.tsx` | 修改（删除死字段） | **Codex** |
+| 6 | `tests/core.test.ts` | 修改（新增导出导入测试） | **Codex** |
+| 7 | `AGENTS.md`、`docs/ROADMAP.md`、`docs/STATUS.md` | 修改（规则与进度） | **我** |
+| 8 | `package.json`、`README.md`、`CONTRIBUTING.md`、`docs/STATUS.md` | 修改（修正 Node 版本声明，见 §4.7） | **我** |
+| 9 | 远端分支 `fix/import-link-feedback` | ✅ 已完成（2026-10-10 删除，HTTP 204） | — |
+| — | 全部验收（含故意让 CI 变红） | 见 §5 | **我** |
+
+分界线：**`src/` 下需要写业务逻辑的交给 Codex；配置、文档、GitHub 操作与验收由我负责。** 交给 Codex 的部分见 **附录 A 施工简报**。
 
 ## 4. 详细设计
 
@@ -239,3 +242,161 @@ updates:
 - 死字段 → 删除
 - CI 触发范围 → path 过滤，不跑纯文档改动
 - Node 版本 → 固定 24
+
+---
+
+## 附录 A：施工简报（可直接交给 Codex）
+
+> 本附录是给你直接粘贴给编码 Agent 的。**只做 A.1–A.3 三项，不要碰 `.github/`、`package.json`、`AGENTS.md` 或任何文档**——那些由另一条线负责。
+
+### A.0 边界（先读这段）
+
+- 只改 `src/backup.ts`（新建）、`src/pages/ProblemsPage.tsx`、`src/types.ts`、`src/pages/ImportPage.tsx`、`tests/core.test.ts`。
+- **不要引入任何新依赖**（浏览器原生 API 足够）。
+- **不要改** `src/ai.ts`、`src/fsrs.ts`、`src/db.ts` 的现有行为。
+- **不要顺手重构**无关文件；不要改 `Problem` 里除 `notes`/`codeDrafts` 之外的任何字段。
+- 保持现有代码风格：步骤块注释、子步骤注释、开始/结束 `logger.info`；日志**不得**包含题目全文或任何密钥。
+- 导出格式的字段名与取值**不得自行更改**。
+
+### A.1 新建 `src/backup.ts`
+
+导出的公开 API（签名照抄，不要改名）：
+
+```ts
+import type { Problem } from './types';
+
+export const BACKUP_APP_ID = 'algorhythm';
+export const BACKUP_SCHEMA_VERSION = 1;
+
+export interface BackupFile {
+  schemaVersion: number;
+  app: string;
+  exportedAt: string; // ISO 8601
+  count: number;
+  problems: Problem[];
+}
+
+/** 字段白名单：逐个字段挑，绝不直接序列化传入的 Problem 对象 */
+export function buildBackup(problems: Problem[], now?: Date): BackupFile;
+
+/** 返回 algorhythm-backup-YYYYMMDD-HHmm.json（本地时间） */
+export function backupFileName(now?: Date): string;
+
+/** Blob + URL.createObjectURL + <a download> 触发下载，用完必须 URL.revokeObjectURL */
+export function downloadBackup(file: BackupFile): void;
+
+export interface ParsedBackup {
+  valid: Problem[];
+  invalidCount: number;
+  duplicateInFileCount: number;
+}
+
+/** 整体校验失败时 throw Error，文案见下表；逐条校验失败只计数不抛 */
+export function parseBackup(text: string): ParsedBackup;
+
+export type ImportMode = 'skip' | 'overwrite';
+
+/** invalid 不在其中：无效条目在 parseBackup 阶段已被丢弃，
+ *  界面最终展示的「忽略 N 条无效数据」= parsed.invalidCount + parsed.duplicateInFileCount */
+export interface ImportOutcome {
+  added: number;
+  overwritten: number;
+  skipped: number;
+}
+
+/** 单事务写入；existingIds 为调用方预先查好的本地 id 集合 */
+export function applyImport(
+  incoming: Problem[],
+  existingIds: Set<string>,
+  mode: ImportMode,
+  now?: Date,
+): Promise<ImportOutcome>;
+```
+
+**导出字段白名单**（`buildBackup` 只挑这些，顺序不限）：
+`id`、`title`、`url`、`difficulty`、`description`、`primaryPatternId`、`secondaryPatternIds`、`aiAnalysis`、`fsrsCard`、`createdAt`、`updatedAt`。
+**绝不能出现** `notes`、`codeDrafts`，也不能出现任何 API Key 相关字段。
+
+**逐条校验规则**（不满足即计入 `invalidCount` 并跳过）：
+
+| 字段 | 规则 |
+| --- | --- |
+| `id` | 必须是非空字符串（必需） |
+| `title` | 必须是非空字符串（必需） |
+| `fsrsCard` | 必须是非 null 对象（必需） |
+| `url` | 缺失或非字符串 → 补 `''` |
+| `description` | 缺失或非字符串 → 补 `''` |
+| `difficulty` | 不是 `easy`/`medium`/`hard` → 补 `'medium'` |
+| `primaryPatternId` | 非字符串 → 补 `'two-pointers'` |
+| `secondaryPatternIds` | 非数组 → 补 `[]`；过滤掉非字符串项 |
+| `aiAnalysis` | 非对象 → 补 `{ coreInsight: '', skeleton: '', prerequisites: [], warnings: [] }` |
+| `createdAt` / `updatedAt` | 非有限数字 → 补当前时间戳 |
+
+**文件内重复 id**：保留第一条，后续重复项计入 `duplicateInFileCount` 并丢弃。
+
+**整体校验的报错文案（必须一字不差）**：
+
+| 情况 | 报错 |
+| --- | --- |
+| `JSON.parse` 抛错 | `备份文件不是有效的 JSON。` |
+| `app !== 'algorhythm'` | `这不是 AlgoRhythm 的备份文件。` |
+| `schemaVersion` 不是已知版本（当前只接受 `1`） | `备份文件版本不受支持（版本 ${n}），请升级 AlgoRhythm 后再导入。` |
+| `problems` 不是数组 | `备份文件缺少题目列表，可能已损坏。` |
+
+**`applyImport` 语义**：
+- `mode === 'skip'`：只写入 `incoming` 里 id 不在 `existingIds` 中的题目，其余计入 `skipped`。
+- `mode === 'overwrite'`：不在 `existingIds` 中的 `add`；已存在的用备份版本整体覆盖（`put`），计入 `overwritten`。
+- 全程在**一个 Dexie 事务**内完成，任一步失败则整体回滚。
+- 写入前设置 `updatedAt` 为 `now`（默认当前时间），`fsrsCard` **原样使用备份里的值，不要重新调度**。
+
+### A.2 修改 `src/types.ts` 与 `src/pages/ImportPage.tsx`
+
+- `src/types.ts`：从 `Problem` 接口删除 `notes` 与 `codeDrafts` 两个字段。
+- `src/pages/ImportPage.tsx`：删除构造 `Problem` 对象时的 `notes: ''` 与 `codeDrafts: {}` 两行。
+- 不要做任何数据迁移——IndexedDB 里已有记录的多余字段会被忽略。
+
+### A.3 修改 `src/pages/ProblemsPage.tsx`
+
+在页头「+ 导入题目」按钮旁增加两个按钮：**`导出备份`**、**`导入备份`**。
+
+**UI 文案（必须一字不差）**：
+
+| 位置 | 文案 |
+| --- | --- |
+| 导出成功提示 | `已导出 ${n} 道题` |
+| 导出按钮下方说明 | `备份包含题库与复习进度，不包含 API Key。` |
+| 预览弹窗标题 | `导入预览` |
+| 预览正文 | `备份中有 ${n} 道题。其中 ${a} 道是新的，${b} 道已存在。` |
+| 单选项一（默认选中） | `跳过已存在的（只新增）` |
+| 单选项二 | `覆盖已存在的（还原为备份版本）` |
+| 覆盖警告（仅当 b > 0 时显示） | `覆盖会把已存在题目的复习进度替换为备份里的版本，且无法撤销。` |
+| 确认按钮 | `开始导入` |
+| 取消按钮 | `取消` |
+| 导入结果 | `新增 ${added} 题，覆盖 ${overwritten} 题，跳过 ${skipped} 题` |
+| 结果后追加（仅当 忽略数 > 0） | `，忽略 ${忽略数} 条无效数据`，其中 忽略数 = `parsed.invalidCount + parsed.duplicateInFileCount` |
+
+**行为要求**：
+- 点「导入备份」→ 触发 `<input type="file" accept="application/json">`。
+- 解析失败（`parseBackup` 抛错）→ 显示弹窗或错误提示，**题库不得有任何改动**。
+- 若 `b === 0`（没有已存在的题），不显示单选与覆盖警告，直接说明只会新增。
+- 导入在写库期间按钮置为禁用，避免重复提交；沿用项目现有的同步锁写法。
+- 完成后重新读取题库列表（`useLiveQuery` 应自动刷新，若没有则手动触发）。
+
+### A.4 测试（追加到 `tests/core.test.ts`）
+
+沿用现有的 `fake-indexeddb` 环境，至少覆盖：
+
+1. `buildBackup` 产出的对象含 `schemaVersion: 1`、`app: 'algorhythm'`、`count` 正确，且 **`problems[0]` 不含 `notes` 与 `codeDrafts`**。
+2. `parseBackup` 对四种整体错误分别抛出**上表对应文案**。
+3. `parseBackup` 跳过缺 `id` / 缺 `title` / 缺 `fsrsCard` 的条目，且 `invalidCount` 正确。
+4. 文件内出现重复 `id` 时，`duplicateInFileCount` 正确且只保留第一条。
+5. `applyImport` 在 `skip` 与 `overwrite` 两种模式下，题库的最终状态与计数都正确。
+6. 导入后题目的 `fsrsCard` 与备份文件里的**完全一致**（不要被重新调度）。
+
+### A.5 提交前必须跑通
+
+```sh
+npm run lint && npm run format:check && npm test && npm run build
+```
+
+四项全绿才算完成。若其中任何一项失败，不要跳过、不要加 `eslint-disable`、不要放宽 tsconfig——修到真通过为止。
